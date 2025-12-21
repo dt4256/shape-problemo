@@ -1,0 +1,11 @@
+C:\Users\ihrom\OneDrive\Desktop\Shape prob\shape-problemo\Project v1\Project v1\bin\Debug\Project v1.exe.config
+C:\Users\ihrom\OneDrive\Desktop\Shape prob\shape-problemo\Project v1\Project v1\bin\Debug\Project v1.exe
+C:\Users\ihrom\OneDrive\Desktop\Shape prob\shape-problemo\Project v1\Project v1\bin\Debug\Project v1.pdb
+C:\Users\ihrom\OneDrive\Desktop\Shape prob\shape-problemo\Project v1\Project v1\obj\Debug\Project v1.csproj.AssemblyReference.cache
+C:\Users\ihrom\OneDrive\Desktop\Shape prob\shape-problemo\Project v1\Project v1\obj\Debug\Project_v1.Form1.resources
+C:\Users\ihrom\OneDrive\Desktop\Shape prob\shape-problemo\Project v1\Project v1\obj\Debug\Project_v1.Properties.Resources.resources
+C:\Users\ihrom\OneDrive\Desktop\Shape prob\shape-problemo\Project v1\Project v1\obj\Debug\Project v1.csproj.GenerateResource.cache
+C:\Users\ihrom\OneDrive\Desktop\Shape prob\shape-problemo\Project v1\Project v1\obj\Debug\Project v1.csproj.CoreCompileInputs.cache
+C:\Users\ihrom\OneDrive\Desktop\Shape prob\shape-problemo\Project v1\Project v1\obj\Debug\Project v1.exe
+C:\Users\ihrom\OneDrive\Desktop\Shape prob\shape-problemo\Project v1\Project v1\obj\Debug\Project v1.pdb
+C:\Users\ihrom\OneDrive\Desktop\Shape prob\shape-problemo\Project v1\Project v1\obj\Debug\Project v1.exe.config
