@@ -1,5 +1,6 @@
 ﻿using Project_v1;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -31,7 +32,6 @@ namespace Project_v1
     {
         Figures nowFigure = Figures.Circle;
         Algos Algo = Algos.Basic;
-        List<(int, int)> dots_lines = new List<(int, int)>();
         List<Shape> shapes = new List<Shape>();
 
         public Form1()
@@ -44,27 +44,7 @@ namespace Project_v1
 
 
 
-        private void DeleteInsideWithRefresh()
-        {
-            List<int> temp = new List<int>();
-            if (shapes.Count > 3)
-            {
-                for (int i = 0; i < shapes.Count; i++)
-                {
-                    if (shapes[i].Status == 0)
-                    {
-                        temp.Add(i);
-                    }
-                }
-                temp.Sort();
-                temp.Reverse();
-                for (int i = temp.Count - 1; i >= 0; i--)
-                {
-                    shapes.RemoveAt(temp[i]);
-                }
-
-            }
-        }
+        
 
         private double[] Get_K(int x1, int y1, int x2, int y2)
         {
@@ -224,18 +204,15 @@ namespace Project_v1
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            for (int i = 0; i < shapes.Count; i++)
-            {
-                shapes[i].Draw(e.Graphics);
-            }
+            
 
 
 
 
 
+            
+            //algos
             for (int i = 0; i < shapes.Count; i++) shapes[i].Status = 0;
-
-
             //basic algo
             if (shapes.Count > 2 && Algo == Algos.Basic)
             {
@@ -269,10 +246,22 @@ namespace Project_v1
                         }
                     }
                 }
-
+                //Алгоритм закончился начинается удаление.
+                shapes = shapes.OrderByDescending(x => x.Status).ToList();
+                for (int i = shapes.Count - 1; i >= 0; i--) {
+                    if (shapes[i].Status == 1) break;
+                    else
+                    {
+                        shapes.RemoveAt(i);
+                    }
+                }
 
             }
 
+            for (int i = 0; i < shapes.Count; i++)
+            {
+                shapes[i].Draw(e.Graphics);
+            }
 
         }
     }
