@@ -33,6 +33,7 @@ namespace Project_v1
         Figures nowFigure = Figures.Circle;
         Algos Algo = Algos.Basic;
         List<Shape> shapes = new List<Shape>();
+        bool removing_flag = false;
 
         public Form1()
         {
@@ -163,7 +164,7 @@ namespace Project_v1
                 shapes[i].DiffX = 0;
                 shapes[i].DiffY = 0;
             }
-
+            removing_flag = true;
             
             Refresh();
 
@@ -204,13 +205,6 @@ namespace Project_v1
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            
-
-
-
-
-
-            
             //algos
             for (int i = 0; i < shapes.Count; i++) shapes[i].Status = 0;
             //basic algo
@@ -224,7 +218,6 @@ namespace Project_v1
 
                         bool upper = false;
                         bool lower = false;
-
                         double[] tmp = Get_K(shapes[i].X, shapes[i].Y, shapes[j].X, shapes[j].Y);
 
                         double k = tmp[0];
@@ -246,17 +239,23 @@ namespace Project_v1
                         }
                     }
                 }
-                //Алгоритм закончился начинается удаление.
-                shapes = shapes.OrderByDescending(x => x.Status).ToList();
-                for (int i = shapes.Count - 1; i >= 0; i--) {
-                    if (shapes[i].Status == 1) break;
-                    else
-                    {
-                        shapes.RemoveAt(i);
-                    }
-                }
 
-            }
+                if (removing_flag)
+                {
+                    //Алгоритм закончился начинается удаление.
+                    shapes = shapes.OrderByDescending(x => x.Status).ToList();
+                    for (int i = shapes.Count - 1; i >= 0; i--)
+                    {
+                        if (shapes[i].Status == 1) break;
+                        else
+                        {
+                            shapes.RemoveAt(i);
+                        }
+                    }
+                    removing_flag = false;
+                }
+    }
+
 
             for (int i = 0; i < shapes.Count; i++)
             {
@@ -264,8 +263,5 @@ namespace Project_v1
             }
 
         }
-    }
-       
-    }
-
-
+    }  
+}
