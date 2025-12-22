@@ -243,15 +243,8 @@ namespace Project_v1
                 if (removing_flag)
                 {
                     //Алгоритм закончился начинается удаление.
-                    shapes = shapes.OrderByDescending(x => x.Status).ToList();
-                    for (int i = shapes.Count - 1; i >= 0; i--)
-                    {
-                        if (shapes[i].Status == 1) break;
-                        else
-                        {
-                            shapes.RemoveAt(i);
-                        }
-                    }
+                    //запрос в гугл оставить только определенные элементы в списке c# и мне выдало с where
+                    shapes = shapes.Where(x => x.Status == 1).ToList();
                     removing_flag = false;
                 }
     }
