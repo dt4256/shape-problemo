@@ -241,7 +241,7 @@ namespace Project_v1
             
             if (shapes.Count > 2 && Algo == Algos.Basic)
             {
-                RecalculateHullBasic();
+               
                 DeleteInsideWithRefresh();
                 RecalculateHullBasic();
             }
