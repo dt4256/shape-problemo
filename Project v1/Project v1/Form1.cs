@@ -59,8 +59,7 @@ namespace Project_v1
                     bool upper = false;
                     bool lower = false;
 
-                    double[] tmp = Get_K(shapes[i].X, shapes[i].Y,
-                                         shapes[j].X, shapes[j].Y);
+                    double[] tmp = Get_K(shapes[i].X, shapes[i].Y, shapes[j].X, shapes[j].Y);
 
                     double k = tmp[0];
                     int x1 = (int)tmp[1];
@@ -83,7 +82,24 @@ namespace Project_v1
             }
         }
 
-
+        private void DeleteInsideWithRefresh() {
+            List<int> temp = new List<int>();
+            if (shapes.Count > 3)
+            {
+                for (int i = 0; i < shapes.Count; i++) {
+                    if (shapes[i].Status == 0) { 
+                        temp.Add(i);
+                    }
+                }
+                temp.Sort();
+                temp.Reverse();
+                for (int i = temp.Count - 1; i >= 0; i--)
+                {
+                    shapes.RemoveAt(temp[i]);
+                }
+               
+            }
+        }
 
         private double[] Get_K(int x1, int y1, int x2, int y2) {
             double k;
@@ -159,6 +175,8 @@ namespace Project_v1
                         shapes[shapes.Count - 1].Flag = true;
                         Refresh();
                     }
+
+
                 //перерисовка оболочки
                 if (shapes.Count > 2 && Algo == Algos.Basic)
                 {
@@ -166,7 +184,8 @@ namespace Project_v1
                 }
                 //перерисовка оболочки
                 Refresh();
-
+                
+                
             }
 
             for (int i = shapes.Count-1; i >=0; i--)
@@ -219,12 +238,16 @@ namespace Project_v1
                 shapes[i].DiffY = 0;
             }
             //перерисовка оболочки
+            
             if (shapes.Count > 2 && Algo == Algos.Basic)
             {
+                RecalculateHullBasic();
+                DeleteInsideWithRefresh();
                 RecalculateHullBasic();
             }
             //перерисовка оболочки
             Refresh();
+            
         }
 
         private void sqareToolStripMenuItem_Click(object sender, EventArgs e)
