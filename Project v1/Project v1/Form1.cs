@@ -17,6 +17,7 @@ using System.Windows.Forms;
 
 namespace Project_v1
 {
+    
     public enum Figures
     {
         Circle,
@@ -26,7 +27,7 @@ namespace Project_v1
     public enum Algos
     {
         Basic,
-        Mod
+        Grehem
     }
     public partial class Form1 : Form
     {
@@ -42,10 +43,10 @@ namespace Project_v1
             shapes.Add(new Circle(300, 300));
         }
 
-
-
-
         
+
+
+
 
         private double[] Get_K(int x1, int y1, int x2, int y2)
         {
@@ -205,7 +206,7 @@ namespace Project_v1
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            //algos
+            //algos start
             for (int i = 0; i < shapes.Count; i++) shapes[i].Status = 0;
             //basic algo
             if (shapes.Count > 2 && Algo == Algos.Basic)
@@ -239,17 +240,26 @@ namespace Project_v1
                         }
                     }
                 }
+               
 
-                if (removing_flag)
+                
+            }else if (shapes.Count > 2 || Algo == Algos.Grehem)
+            {
+                List<Shape> temp_shape = shapes;
+                temp_shape.OrderBy(x => x.X);
+                for (int i = 0; i < temp_shape.Count; i++)
                 {
-                    //Алгоритм закончился начинается удаление.
-                    //запрос в гугл оставить только определенные элементы в списке c# и мне выдало с where
-                    shapes = shapes.Where(x => x.Status == 1).ToList();
-                    removing_flag = false;
+                    //http://e-maxx.ru/algo/convex_hull_graham
                 }
-    }
-
-
+            }
+            if (removing_flag)
+            {
+                //Алгоритм закончился начинается удаление.
+                //запрос в гугл оставить только определенные элементы в списке c# и мне выдало с where
+                shapes = shapes.Where(x => x.Status == 1).ToList();
+                removing_flag = false;
+            }
+            //обтяжка кончилась
             for (int i = 0; i < shapes.Count; i++)
             {
                 shapes[i].Draw(e.Graphics);
