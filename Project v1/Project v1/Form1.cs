@@ -11,13 +11,14 @@ using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.AxHost;
 
 
 
 
 namespace Project_v1
 {
-    
+
     public enum Figures
     {
         Circle,
@@ -27,7 +28,7 @@ namespace Project_v1
     public enum Algos
     {
         Basic,
-        Grehem
+        Jarvis
     }
     public partial class Form1 : Form
     {
@@ -43,7 +44,7 @@ namespace Project_v1
             shapes.Add(new Circle(300, 300));
         }
 
-        
+
 
 
 
@@ -154,7 +155,7 @@ namespace Project_v1
                     Refresh();
                 }
             }
-            
+
         }
         //клик
         private void Form1_MouseUp(object sender, MouseEventArgs e)
@@ -166,7 +167,7 @@ namespace Project_v1
                 shapes[i].DiffY = 0;
             }
             removing_flag = true;
-            
+
             Refresh();
 
         }
@@ -210,62 +211,115 @@ namespace Project_v1
             //algos start
             for (int i = 0; i < shapes.Count; i++) shapes[i].Status = 0;
             //basic algo
-            if (shapes.Count > 2 && Algo == Algos.Basic)
+            if (shapes.Count > 2)
             {
-                for (int i = 0; i < shapes.Count; i++)
+                if (Algo == Algos.Basic)
                 {
-                    for (int j = 0; j < shapes.Count; j++)
+                    for (int i = 0; i < shapes.Count; i++)
                     {
-                        if (i == j) continue;
-
-                        bool upper = false;
-                        bool lower = false;
-                        double[] tmp = Get_K(shapes[i].X, shapes[i].Y, shapes[j].X, shapes[j].Y);
-
-                        double k = tmp[0];
-                        int x1 = (int)tmp[1];
-                        int y1 = (int)tmp[2];
-
-                        for (int m = 0; m < shapes.Count; m++)
+                        for (int j = 0; j < shapes.Count; j++)
                         {
-                            int pos = Upper_Lower(shapes[m].X, shapes[m].Y, x1, y1, k);
-                            if (pos == 1) upper = true;
-                            else if (pos == -1) lower = true;
-                        }
+                            if (i == j) continue;
 
-                        if ((upper && !lower) || (!upper && lower) || (!upper && !lower))
-                        {
-                            shapes[i].Status = 1;
-                            shapes[j].Status = 1;
-                            e.Graphics.DrawLine(new Pen(Color.Black), shapes[i].X, shapes[i].Y, shapes[j].X, shapes[j].Y);
+                            bool upper = false;
+                            bool lower = false;
+                            double[] tmp = Get_K(shapes[i].X, shapes[i].Y, shapes[j].X, shapes[j].Y);
+
+                            double k = tmp[0];
+                            int x1 = (int)tmp[1];
+                            int y1 = (int)tmp[2];
+
+                            for (int m = 0; m < shapes.Count; m++)
+                            {
+                                int pos = Upper_Lower(shapes[m].X, shapes[m].Y, x1, y1, k);
+                                if (pos == 1) upper = true;
+                                else if (pos == -1) lower = true;
+                            }
+
+                            if ((upper && !lower) || (!upper && lower) || (!upper && !lower))
+                            {
+                                shapes[i].Status = 1;
+                                shapes[j].Status = 1;
+                                e.Graphics.DrawLine(new Pen(Color.Black), shapes[i].X, shapes[i].Y, shapes[j].X, shapes[j].Y);
+                            }
                         }
                     }
-                }
-               
 
-                
-            }else if (shapes.Count > 2 || Algo == Algos.Grehem)
-            {
-                List<Shape> temp_shape = shapes;
-                temp_shape.OrderBy(x => x.X);
-                for (int i = 0; i < temp_shape.Count; i++)
-                {
-                    //http://e-maxx.ru/algo/convex_hull_graham
+
+
                 }
+                else if (Algo == Algos.Jarvis)
+                {
+                    int p = 0;
+                    for (int i = 1; i < shapes.Count; i++)
+                    {
+                        if (shapes[i].X < shapes[p].X || (shapes[i].X == shapes[p].X && shapes[i].Y < shapes[p].Y))
+                            p = i;
+                    }
+
+                    int start = p;
+                    do
+                    {
+                        shapes[p].Status = 1;
+                        int next = (p + 1) % shapes.Count;//выбирается след точка с защитой от out of range. 
+                        for (int i = 0; i < shapes.Count; i++)
+                        {
+                            if (i == p) continue;
+                            double D = (shapes[next].X - shapes[p].X) * (shapes[i].Y - shapes[p].Y) - (shapes[next].Y - shapes[p].Y) * (shapes[i].X - shapes[p].X);
+                            if (D < 0)
+                            {
+                                next = i;//жадно ищем самую левую точку относительно вектора pnext учитывая что next меняется
+                            }
+                        }
+                        e.Graphics.DrawLine(new Pen(Color.Red), shapes[p].X, shapes[p].Y, shapes[next].X, shapes[next].Y);
+                        p = next;
+
+                    } while (p != start);
+
+                }
+
+                    if (removing_flag)
+                    {
+                        //Алгоритм закончился начинается удаление.
+                        //запрос в гугл оставить только определенные элементы в списке c# и мне выдало с where
+                        shapes = shapes.Where(x => x.Status == 1).ToList();
+                        removing_flag = false;
+                    }
+                
             }
-            if (removing_flag)
-            {
-                //Алгоритм закончился начинается удаление.
-                //запрос в гугл оставить только определенные элементы в списке c# и мне выдало с where
-                shapes = shapes.Where(x => x.Status == 1).ToList();
-                removing_flag = false;
-            }
-            //обтяжка кончилась
-            for (int i = 0; i < shapes.Count; i++)
-            {
-                shapes[i].Draw(e.Graphics);
-            }
+                //обтяжка кончилась
+                for (int i = 0; i < shapes.Count; i++)
+                {
+                    shapes[i].Draw(e.Graphics);
+                }
+
+            
+        }
+
+        private void jarvisToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Algo = Algos.Jarvis;
+            jarvisToolStripMenuItem.Checked= true;
+            basicToolStripMenuItem.Checked = false;
+            Refresh();  
+        }
+
+        private void basicToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Algo = Algos.Basic;
+            basicToolStripMenuItem.Checked= true;
+            jarvisToolStripMenuItem.Checked=false;
+            Refresh();
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
 
         }
-    }  
+
+        private void typeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+    }
 }
