@@ -270,6 +270,12 @@ namespace Project_v1
                             {
                                 next = i;//жадно ищем самую левую точку относительно вектора pnext учитывая что next меняется
                             }
+                            else if (D == 0) {
+                                int distN = (shapes[next].X - shapes[p].X) * (shapes[next].X - shapes[p].X) + (shapes[next].Y - shapes[p].Y) * (shapes[next].Y - shapes[p].Y);
+                                int distI = (shapes[i].X - shapes[p].X) * (shapes[i].X - shapes[p].X) + (shapes[i].Y - shapes[p].Y) * (shapes[i].Y - shapes[p].Y);
+                                if (distI > distN)next = i;
+                                
+                            }
                         }
                         e.Graphics.DrawLine(new Pen(Color.Red), shapes[p].X, shapes[p].Y, shapes[next].X, shapes[next].Y);
                         p = next;
