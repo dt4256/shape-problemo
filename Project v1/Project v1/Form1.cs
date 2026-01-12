@@ -42,6 +42,10 @@ namespace Project_v1
             InitializeComponent();
             DoubleBuffered = true;
             shapes.Add(new Circle(300, 300));
+            shapes.Add(new Circle(500, 300));
+            shapes.Add(new Circle(600, 300));
+            shapes.Add(new Circle(300, 500));
+            
         }
 
 
@@ -253,38 +257,60 @@ namespace Project_v1
                     int p = 0;
                     for (int i = 1; i < shapes.Count; i++)
                     {
-                        if (shapes[i].X < shapes[p].X || (shapes[i].X == shapes[p].X && shapes[i].Y < shapes[p].Y))
+                        if (shapes[i].Y < shapes[p].Y || (shapes[i].Y == shapes[p].Y && shapes[i].X < shapes[p].X))
                             p = i;
+                        
                     }
-
+                    //e.Graphics.DrawEllipse(new Pen(Color.Red), shapes[p].X, shapes[p].Y, 5, 5);
                     int start = p;
-                    do
+                    
+                    shapes[p].Status = 1;
+                    double mincos=4;
+                    int next = 0;
                     {
-                        shapes[p].Status = 1;
-                        int next = (p + 1) % shapes.Count;//выбирается след точка с защитой от out of range. 
+                        int xtemp = -100;
+                        int ytemp = shapes[p].X;
+
                         for (int i = 0; i < shapes.Count; i++)
                         {
-                            if (i == p) continue;
-                            double D = (shapes[next].X - shapes[p].X) * (shapes[i].Y - shapes[p].Y) - (shapes[next].Y - shapes[p].Y) * (shapes[i].X - shapes[p].X);
-                            if (D < 0)
+                            double cos = vectorcos(xtemp, ytemp, shapes[p].X, shapes[p].Y, shapes[i].X, shapes[i].Y);
+                            
+                           if(cos < mincos)
+                           {
+                                mincos = cos;
+                                next = i;
+                           }
+                            
+                        }
+                        
+                    }
+                    shapes[next].Status = 1;
+                    e.Graphics.DrawLine(new Pen(Color.Red), shapes[start].X, shapes[start].Y, shapes[next].X, shapes[next].Y);
+                    int a = start;
+                    int b = next;
+                    do
+                    {
+                        mincos = 4;
+                        for (int i = 0; i < shapes.Count; i++)
+                        {
+                            double cos = vectorcos(shapes[a].X, shapes[a].Y, shapes[b].X, shapes[b].Y, shapes[i].X, shapes[i].Y);
+
+                            if (cos < mincos)
                             {
-                                next = i;//жадно ищем самую левую точку относительно вектора pnext учитывая что next меняется
-                            }
-                            else if (D == 0) {
-                                int distN = (shapes[next].X - shapes[p].X) * (shapes[next].X - shapes[p].X) + (shapes[next].Y - shapes[p].Y) * (shapes[next].Y - shapes[p].Y);
-                                int distI = (shapes[i].X - shapes[p].X) * (shapes[i].X - shapes[p].X) + (shapes[i].Y - shapes[p].Y) * (shapes[i].Y - shapes[p].Y);
-                                if (distI > distN)next = i;
-                                
+                                mincos = cos;
+                                next = i;
                             }
                         }
-                        e.Graphics.DrawLine(new Pen(Color.Red), shapes[p].X, shapes[p].Y, shapes[next].X, shapes[next].Y);
-                        p = next;
+                        shapes[next].Status = 1;
+                        e.Graphics.DrawLine(new Pen(Color.Red), shapes[b].X, shapes[b].Y, shapes[next].X, shapes[next].Y);
+                        a = b;
+                        b = next;
+                    } while (next != start);
 
-                    } while (p != start);
 
                 }
 
-                    if (removing_flag)
+                if (removing_flag)
                     {
                         //Алгоритм закончился начинается удаление.
                         //запрос в гугл оставить только определенные элементы в списке c# и мне выдало с where
@@ -300,6 +326,25 @@ namespace Project_v1
                 }
 
             
+        }
+
+        private double vectorcos(int ax,int ay,int bx,int by, int cx,int cy)
+        {
+            int bax = ax - bx;
+            int bay = ay - by;
+            int bcx = cx - bx;
+            int bcy = cy - by;
+            double ba = Math.Sqrt(bax * bax + bay * bay);
+            double bc = Math.Sqrt(bcx * bcx + bcy * bcy);
+            try
+            {
+                return (bax * bcx + bay * bcy) / (ba * bc);
+            }
+            catch {
+                return 4;//for mincos
+            }
+
+
         }
 
         private void jarvisToolStripMenuItem_Click(object sender, EventArgs e)

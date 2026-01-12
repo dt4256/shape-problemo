@@ -15,6 +15,7 @@ namespace Project_v1
         protected bool flag;
         protected int diffx, diffy;
         protected int status; //1-крайние
+        protected int move_figure;
 
         public Color Clr
         {
@@ -62,6 +63,7 @@ namespace Project_v1
             flag = false;
             diffx = 0; diffy = 0;
             status = 0;
+            move_figure = 0;
         }
         //
         public abstract void Draw(Graphics g);
