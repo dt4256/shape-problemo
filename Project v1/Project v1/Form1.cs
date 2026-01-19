@@ -36,6 +36,7 @@ namespace Project_v1
         Algos Algo = Algos.Basic;
         List<Shape> shapes = new List<Shape>();
         bool removing_flag = false;
+        bool figmove = false;
 
         public Form1()
         {
@@ -131,6 +132,17 @@ namespace Project_v1
                     Refresh();
                 }
 
+                if (shapes[shapes.Count - 1].Status == 0)
+                {
+                    figmove = true;
+                    for(int i = 0; i < shapes.Count; i++)
+                    {
+                        shapes[i].Flag = true;
+                        shapes[i].DiffX = e.X - shapes[i].X;
+                        shapes[i].DiffY = e.Y - shapes[i].Y;
+                    }
+                }
+
 
             }
 
@@ -150,15 +162,18 @@ namespace Project_v1
         //движение
         private void Form1_MouseMove(object sender, MouseEventArgs e)
         {
+            if (figmove) { }
             for (int i = 0; i < shapes.Count; i++)
             {
                 if (shapes[i].Flag == true)
                 {
                     shapes[i].X = e.X - shapes[i].DiffX;
                     shapes[i].Y = e.Y - shapes[i].DiffY;
-                    Refresh();
+                    
                 }
+                
             }
+            Refresh();
 
         }
         //клик
@@ -171,7 +186,7 @@ namespace Project_v1
                 shapes[i].DiffY = 0;
             }
             removing_flag = true;
-
+            figmove = false;
             Refresh();
 
         }
@@ -252,7 +267,7 @@ namespace Project_v1
 
 
                 }
-                else if (Algo == Algos.Jarvis)
+                else if (Algo == Algos.Jarvis )
                 {
                     int p = 0;
                     for (int i = 1; i < shapes.Count; i++)

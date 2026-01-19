@@ -9,13 +9,13 @@ namespace Project_v1
 {
     abstract class Shape
     {
-        protected int x, y;
-        protected static int R;
-        protected static Color clr;
-        protected bool flag;
-        protected int diffx, diffy;
+        protected int x, y;//pos
+        protected static int R;//radius
+        protected static Color clr;//color
+        protected bool flag;//move_flag
+        protected int diffx, diffy;//
         protected int status; //1-крайние
-        protected int move_figure;
+        protected int move_figure;//idk
 
         public Color Clr
         {
