@@ -30,12 +30,13 @@
         {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.typeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.sqareToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.circleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sqareToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.triangleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.methodToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.jarvisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.basicToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.jarvisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.goToBenchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -60,30 +61,30 @@
             this.sqareToolStripMenuItem,
             this.triangleToolStripMenuItem});
             this.typeToolStripMenuItem.Name = "typeToolStripMenuItem";
-            this.typeToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
+            this.typeToolStripMenuItem.Size = new System.Drawing.Size(77, 20);
             this.typeToolStripMenuItem.Text = "Shape type";
             this.typeToolStripMenuItem.Click += new System.EventHandler(this.typeToolStripMenuItem_Click);
-            // 
-            // sqareToolStripMenuItem
-            // 
-            this.sqareToolStripMenuItem.Name = "sqareToolStripMenuItem";
-            this.sqareToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.sqareToolStripMenuItem.Text = "Sqare";
-            this.sqareToolStripMenuItem.Click += new System.EventHandler(this.sqareToolStripMenuItem_Click);
             // 
             // circleToolStripMenuItem
             // 
             this.circleToolStripMenuItem.Checked = true;
             this.circleToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.circleToolStripMenuItem.Name = "circleToolStripMenuItem";
-            this.circleToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.circleToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
             this.circleToolStripMenuItem.Text = "Circle";
             this.circleToolStripMenuItem.Click += new System.EventHandler(this.circleToolStripMenuItem_Click);
+            // 
+            // sqareToolStripMenuItem
+            // 
+            this.sqareToolStripMenuItem.Name = "sqareToolStripMenuItem";
+            this.sqareToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
+            this.sqareToolStripMenuItem.Text = "Sqare";
+            this.sqareToolStripMenuItem.Click += new System.EventHandler(this.sqareToolStripMenuItem_Click);
             // 
             // triangleToolStripMenuItem
             // 
             this.triangleToolStripMenuItem.Name = "triangleToolStripMenuItem";
-            this.triangleToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.triangleToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
             this.triangleToolStripMenuItem.Text = "Triangle";
             this.triangleToolStripMenuItem.Click += new System.EventHandler(this.triangleToolStripMenuItem_Click);
             // 
@@ -93,17 +94,11 @@
             this.methodToolStripMenuItem.CheckOnClick = true;
             this.methodToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.basicToolStripMenuItem,
-            this.jarvisToolStripMenuItem});
+            this.jarvisToolStripMenuItem,
+            this.goToBenchToolStripMenuItem});
             this.methodToolStripMenuItem.Name = "methodToolStripMenuItem";
             this.methodToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.methodToolStripMenuItem.Text = "Method";
-            // 
-            // jarvisToolStripMenuItem
-            // 
-            this.jarvisToolStripMenuItem.Name = "jarvisToolStripMenuItem";
-            this.jarvisToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.jarvisToolStripMenuItem.Text = "Jarvis";
-            this.jarvisToolStripMenuItem.Click += new System.EventHandler(this.jarvisToolStripMenuItem_Click);
             // 
             // basicToolStripMenuItem
             // 
@@ -114,6 +109,20 @@
             this.basicToolStripMenuItem.Text = "Basic";
             this.basicToolStripMenuItem.Click += new System.EventHandler(this.basicToolStripMenuItem_Click);
             // 
+            // jarvisToolStripMenuItem
+            // 
+            this.jarvisToolStripMenuItem.Name = "jarvisToolStripMenuItem";
+            this.jarvisToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.jarvisToolStripMenuItem.Text = "Jarvis";
+            this.jarvisToolStripMenuItem.Click += new System.EventHandler(this.jarvisToolStripMenuItem_Click);
+            // 
+            // goToBenchToolStripMenuItem
+            // 
+            this.goToBenchToolStripMenuItem.Name = "goToBenchToolStripMenuItem";
+            this.goToBenchToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.goToBenchToolStripMenuItem.Text = "Go_To_Bench";
+            this.goToBenchToolStripMenuItem.Click += new System.EventHandler(this.goToBenchToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -123,6 +132,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Form1";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
@@ -145,6 +155,7 @@
         private System.Windows.Forms.ToolStripMenuItem methodToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem jarvisToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem basicToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem goToBenchToolStripMenuItem;
     }
 }
 

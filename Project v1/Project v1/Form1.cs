@@ -9,6 +9,7 @@ using System.Globalization;
 using System.Linq;
 using System.Runtime.ConstrainedExecution;
 using System.Text;
+
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.AxHost;
@@ -18,7 +19,7 @@ using static System.Windows.Forms.AxHost;
 
 namespace Project_v1
 {
-
+    
     public enum Figures
     {
         Circle,
@@ -34,10 +35,10 @@ namespace Project_v1
     {
         Figures nowFigure = Figures.Circle;
         Algos Algo = Algos.Basic;
-        List<Shape> shapes = new List<Shape>();
+        private List<Shape> shapes = new List<Shape>();
         bool removing_flag = false;
         bool figmove = false;
-
+        private bench _form2;//benchmarc form
         public Form1()
         {
             InitializeComponent();
@@ -162,7 +163,6 @@ namespace Project_v1
         //движение
         private void Form1_MouseMove(object sender, MouseEventArgs e)
         {
-            if (figmove) { }
             for (int i = 0; i < shapes.Count; i++)
             {
                 if (shapes[i].Flag == true)
@@ -386,6 +386,22 @@ namespace Project_v1
         private void typeToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void goToBenchToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (_form2 == null || _form2.IsDisposed)
+            {
+                _form2 = new bench(this); 
+            }
+
+            this.Hide();
+            _form2.Show();
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
         }
     }
 }
