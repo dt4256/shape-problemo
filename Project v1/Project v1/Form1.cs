@@ -45,7 +45,7 @@ namespace Project_v1
             DoubleBuffered = true;
             shapes.Add(new Circle(300, 300));
             shapes.Add(new Circle(500, 300));
-            shapes.Add(new Circle(600, 300));
+            shapes.Add(new Circle(2000, 300));
             shapes.Add(new Circle(300, 500));
             
         }

@@ -31,7 +31,7 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.backtomainToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.startBenchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.stopBenchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.temToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -40,7 +40,7 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.backtomainToolStripMenuItem,
             this.startBenchToolStripMenuItem,
-            this.stopBenchToolStripMenuItem});
+            this.temToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(800, 24);
@@ -62,11 +62,12 @@
             this.startBenchToolStripMenuItem.Click += new System.EventHandler(this.startBenchToolStripMenuItem_Click);
             this.startBenchToolStripMenuItem.Paint += new System.Windows.Forms.PaintEventHandler(this.startBenchToolStripMenuItem_Paint);
             // 
-            // stopBenchToolStripMenuItem
+            // temToolStripMenuItem
             // 
-            this.stopBenchToolStripMenuItem.Name = "stopBenchToolStripMenuItem";
-            this.stopBenchToolStripMenuItem.Size = new System.Drawing.Size(79, 20);
-            this.stopBenchToolStripMenuItem.Text = "Stop bench";
+            this.temToolStripMenuItem.Name = "temToolStripMenuItem";
+            this.temToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
+            this.temToolStripMenuItem.Text = "temp";
+            this.temToolStripMenuItem.Click += new System.EventHandler(this.temToolStripMenuItem_Click);
             // 
             // bench
             // 
@@ -79,6 +80,8 @@
             this.Text = "bench";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.bench_FormClosing);
             this.Load += new System.EventHandler(this.bench_Load);
+            this.SizeChanged += new System.EventHandler(this.bench_SizeChanged);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.bench_Paint);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -91,6 +94,6 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem backtomainToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem startBenchToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem stopBenchToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem temToolStripMenuItem;
     }
 }

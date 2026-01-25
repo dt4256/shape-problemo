@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -14,12 +16,15 @@ namespace Project_v1
 
     public partial class bench : Form
     {
-        
+        Random rnd = new Random();
         private readonly Form1 _ownerForm;
         private List<Shape> shapes = new List<Shape>();
         private Figures Fignow = Figures.Circle;
         private Algos Algo = Algos.Basic;
         bool removing_flag = false;
+        List<long> basic_time = new List<long>();
+        List<long> jarvis_time = new List<long>();
+        bool ready_for_graphix = false;
         public bench(Form1 owner)
         {
             InitializeComponent();
@@ -28,9 +33,9 @@ namespace Project_v1
         
         private Shape change_figure(int type,int x,int y)
         {
-            if (x == 0) {
+            if (type == 0) {
                 return new Circle(x, y);
-            }else if (x == 1)
+            }else if (type == 1)
             {
                 return new Triangle(x, y);
             }
@@ -59,12 +64,148 @@ namespace Project_v1
 
         private void startBenchToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            int dotsn = 20;
+            ready_for_graphix = false;
             shapes.Clear();
-            //for(int i = 3;i<)
+            basic_time.Clear();
+            jarvis_time.Clear();
+            basic_time.Add(0);
+            basic_time.Add(0);
+            jarvis_time.Add(0);
+            jarvis_time.Add(0);
+            Algo = Algos.Basic;
+            removing_flag = false;
+            int screenWidth = this.ClientSize.Width;
+            int screenHeight = this.ClientSize.Height;
+            for (int i = 3; i <= dotsn; i++)
+            {
+                temToolStripMenuItem.Text="B"+i.ToString();
+                Stopwatch stopwatch = Stopwatch.StartNew();
+                shapes.Add(change_figure(rnd.Next(0, 3), rnd.Next(screenWidth), rnd.Next(screenHeight)));
+                Refresh();
+                stopwatch.Stop();
+                basic_time.Add(stopwatch.ElapsedMilliseconds);
+                
+            }
+            shapes.Clear();
+            Refresh();
+            Algo = Algos.Jarvis;
+            for (int i = 3; i <= dotsn; i++)
+            {
+                temToolStripMenuItem.Text = "J"+i.ToString();
+                Stopwatch stopwatch = Stopwatch.StartNew();
+                shapes.Add(change_figure(rnd.Next(0, 3), rnd.Next(screenWidth), rnd.Next(screenHeight)));
+                Refresh();
+                stopwatch.Stop();
+                jarvis_time.Add(stopwatch.ElapsedMilliseconds);
+
+            }
+            shapes.Clear();
+            Refresh();
+            ready_for_graphix = true;
+            this.Invalidate();
+
+
         }
 
         private void startBenchToolStripMenuItem_Paint(object sender, PaintEventArgs e)
         {
+           
+
+
+        }
+
+        private double vectorcos(int ax, int ay, int bx, int by, int cx, int cy)
+        {
+            int bax = ax - bx;
+            int bay = ay - by;
+            int bcx = cx - bx;
+            int bcy = cy - by;
+            double ba = Math.Sqrt(bax * bax + bay * bay);
+            double bc = Math.Sqrt(bcx * bcx + bcy * bcy);
+            try
+            {
+                return (bax * bcx + bay * bcy) / (ba * bc);
+            }
+            catch
+            {
+                return 4;//for mincos
+            }
+
+
+        }
+
+        private double[] Get_K(int x1, int y1, int x2, int y2)
+        {
+            double k;
+            int tx1 = x1, ty1 = y1;
+            if (x1 > x2)
+            {
+                (x1, x2) = (x2, x1);
+                (y1, y2) = (y2, y1);
+            }
+            x2 -= x1;
+            y2 -= y1;
+            x1 = 0; y1 = 0;
+            //y2=k*x2 k =y2/x2
+            if (x2 == 0) { k = double.PositiveInfinity; }
+            else { k = (double)(y2) / x2; }
+            return new double[] { k, tx1, ty1 };
+        }
+
+        private int Upper_Lower(int x, int y, int x1, int y1, double k)
+        {
+            x -= x1;
+            y -= y1;
+            if (y > k * x)
+            {
+                return 1;
+            }
+            else if (y < k * x)
+            {
+                return -1;
+            }
+            return 0;
+            //1-upper -1 lower 0 on line
+        }
+
+        private void bench_Paint(object sender, PaintEventArgs e)
+        {
+            //int screenWidth = this.ClientSize.Width;
+            //int screenHeight = this.ClientSize.Height;
+            
+            if (ready_for_graphix)
+            {
+                int marginup = 40;
+                int markx = 15;
+                e.Graphics.Clear(Color.White);
+                int screenWidth = this.ClientSize.Width-5;   
+                int screenHeight = this.ClientSize.Height-5; 
+                using (Pen pen = new Pen(Color.Black))
+                {
+                    pen.EndCap = LineCap.ArrowAnchor;
+                    e.Graphics.DrawLine(pen, markx, screenHeight, markx, marginup);
+                    e.Graphics.DrawLine(pen,markx,screenHeight,screenWidth,screenHeight); 
+                }
+                int workWidth = screenWidth - markx;
+                int workHeight = screenHeight - marginup;
+                long maxTime = Math.Max(basic_time.Max(), jarvis_time.Max());
+                for (int i = 1; i < basic_time.Count; i++) {
+                    int x1 = markx + (i - 1) * workWidth / (basic_time.Count - 1);
+                    int y1 = screenHeight - (int)(basic_time[i - 1] * workHeight / maxTime);
+                    int x2 = markx + i * workWidth / (basic_time.Count - 1);
+                    int y2 = screenHeight - (int)(basic_time[i] * workHeight / maxTime);
+                    e.Graphics.DrawLine(new Pen(Color.Black), x1, y1, x2, y2);
+                }
+                for (int i = 1; i < jarvis_time.Count; i++)
+                {
+                    int x1 = markx + (i - 1) * workWidth / (jarvis_time.Count - 1);
+                    int y1 = screenHeight - (int)(jarvis_time[i - 1] * workHeight / maxTime);
+                    int x2 = markx + i * workWidth / (jarvis_time.Count - 1);
+                    int y2 = screenHeight - (int)(jarvis_time[i] * workHeight / maxTime);
+                    e.Graphics.DrawLine(new Pen(Color.Red), x1, y1, x2, y2);
+                }
+            }
             //algos start
             for (int i = 0; i < shapes.Count; i++) shapes[i].Status = 0;
             //basic algo
@@ -122,7 +263,7 @@ namespace Project_v1
                     int next = 0;
                     {
                         int xtemp = -100;
-                        int ytemp = shapes[p].X;
+                        int ytemp = shapes[p].Y;
 
                         for (int i = 0; i < shapes.Count; i++)
                         {
@@ -177,62 +318,17 @@ namespace Project_v1
             {
                 shapes[i].Draw(e.Graphics);
             }
+        }
 
+        private void bench_SizeChanged(object sender, EventArgs e)
+        {
+            this.Invalidate();
 
         }
 
-        private double vectorcos(int ax, int ay, int bx, int by, int cx, int cy)
+        private void temToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            int bax = ax - bx;
-            int bay = ay - by;
-            int bcx = cx - bx;
-            int bcy = cy - by;
-            double ba = Math.Sqrt(bax * bax + bay * bay);
-            double bc = Math.Sqrt(bcx * bcx + bcy * bcy);
-            try
-            {
-                return (bax * bcx + bay * bcy) / (ba * bc);
-            }
-            catch
-            {
-                return 4;//for mincos
-            }
 
-
-        }
-
-        private double[] Get_K(int x1, int y1, int x2, int y2)
-        {
-            double k;
-            int tx1 = x1, ty1 = y1;
-            if (x1 > x2)
-            {
-                (x1, x2) = (x2, x1);
-                (y1, y2) = (y2, y1);
-            }
-            x2 -= x1;
-            y2 -= y1;
-            x1 = 0; y1 = 0;
-            //y2=k*x2 k =y2/x2
-            if (x2 == 0) { k = double.PositiveInfinity; }
-            else { k = (double)(y2) / x2; }
-            return new double[] { k, tx1, ty1 };
-        }
-
-        private int Upper_Lower(int x, int y, int x1, int y1, double k)
-        {
-            x -= x1;
-            y -= y1;
-            if (y > k * x)
-            {
-                return 1;
-            }
-            else if (y < k * x)
-            {
-                return -1;
-            }
-            return 0;
-            //1-upper -1 lower 0 on line
         }
     }
 
