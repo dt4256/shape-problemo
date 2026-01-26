@@ -64,24 +64,25 @@ namespace Project_v1
 
         private void startBenchToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            int dotsn = 20;
+            
+            int step = 10;
+            int launches = 600 / step;
             ready_for_graphix = false;
             shapes.Clear();
             basic_time.Clear();
             jarvis_time.Clear();
-            basic_time.Add(0);
-            basic_time.Add(0);
-            jarvis_time.Add(0);
-            jarvis_time.Add(0);
             Algo = Algos.Basic;
             removing_flag = false;
             int screenWidth = this.ClientSize.Width;
             int screenHeight = this.ClientSize.Height;
-            for (int i = 3; i <= dotsn; i++)
+            for (int i = 3; i <= launches; i++)
             {
                 temToolStripMenuItem.Text="B"+i.ToString();
                 Stopwatch stopwatch = Stopwatch.StartNew();
-                shapes.Add(change_figure(rnd.Next(0, 3), rnd.Next(screenWidth), rnd.Next(screenHeight)));
+                for (int j = 0; j < step; j++)
+                {
+                    shapes.Add(change_figure(rnd.Next(0, 3), rnd.Next(screenWidth), rnd.Next(screenHeight)));
+                }
                 Refresh();
                 stopwatch.Stop();
                 basic_time.Add(stopwatch.ElapsedMilliseconds);
@@ -90,11 +91,14 @@ namespace Project_v1
             shapes.Clear();
             Refresh();
             Algo = Algos.Jarvis;
-            for (int i = 3; i <= dotsn; i++)
+            for (int i = 3; i <= launches; i++)
             {
                 temToolStripMenuItem.Text = "J"+i.ToString();
                 Stopwatch stopwatch = Stopwatch.StartNew();
-                shapes.Add(change_figure(rnd.Next(0, 3), rnd.Next(screenWidth), rnd.Next(screenHeight)));
+                for (int j = 0; j < step; j++)
+                {
+                    shapes.Add(change_figure(rnd.Next(0, 3), rnd.Next(screenWidth), rnd.Next(screenHeight)));
+                }
                 Refresh();
                 stopwatch.Stop();
                 jarvis_time.Add(stopwatch.ElapsedMilliseconds);
@@ -209,19 +213,19 @@ namespace Project_v1
             //algos start
             for (int i = 0; i < shapes.Count; i++) shapes[i].Status = 0;
             //basic algo
-            if (shapes.Count > 2)
+            if (shapes.Count > 2 && ready_for_graphix==false)
             {
                 if (Algo == Algos.Basic)
                 {
-                    for (int i = 0; i < shapes.Count; i++)
+                    foreach(Shape i in shapes)
                     {
-                        for (int j = 0; j < shapes.Count; j++)
+                        foreach (Shape j in shapes)
                         {
                             if (i == j) continue;
 
                             bool upper = false;
                             bool lower = false;
-                            double[] tmp = Get_K(shapes[i].X, shapes[i].Y, shapes[j].X, shapes[j].Y);
+                            double[] tmp = Get_K(i.X, i.Y, j.X,j.Y);
 
                             double k = tmp[0];
                             int x1 = (int)tmp[1];
@@ -236,9 +240,8 @@ namespace Project_v1
 
                             if ((upper && !lower) || (!upper && lower) || (!upper && !lower))
                             {
-                                shapes[i].Status = 1;
-                                shapes[j].Status = 1;
-                                e.Graphics.DrawLine(new Pen(Color.Black), shapes[i].X, shapes[i].Y, shapes[j].X, shapes[j].Y);
+                                i.Status = 1;
+                                j.Status = 1;
                             }
                         }
                     }
@@ -255,7 +258,6 @@ namespace Project_v1
                             p = i;
 
                     }
-                    //e.Graphics.DrawEllipse(new Pen(Color.Red), shapes[p].X, shapes[p].Y, 5, 5);
                     int start = p;
 
                     shapes[p].Status = 1;
@@ -279,7 +281,6 @@ namespace Project_v1
 
                     }
                     shapes[next].Status = 1;
-                    e.Graphics.DrawLine(new Pen(Color.Red), shapes[start].X, shapes[start].Y, shapes[next].X, shapes[next].Y);
                     int a = start;
                     int b = next;
                     do
@@ -296,7 +297,6 @@ namespace Project_v1
                             }
                         }
                         shapes[next].Status = 1;
-                        e.Graphics.DrawLine(new Pen(Color.Red), shapes[b].X, shapes[b].Y, shapes[next].X, shapes[next].Y);
                         a = b;
                         b = next;
                     } while (next != start);
@@ -304,20 +304,10 @@ namespace Project_v1
 
                 }
 
-                if (removing_flag)
-                {
-                    //Алгоритм закончился начинается удаление.
-                    //запрос в гугл оставить только определенные элементы в списке c# и мне выдало с where
-                    shapes = shapes.Where(x => x.Status == 1).ToList();
-                    removing_flag = false;
-                }
+                
 
             }
-            //обтяжка кончилась
-            for (int i = 0; i < shapes.Count; i++)
-            {
-                shapes[i].Draw(e.Graphics);
-            }
+            
         }
 
         private void bench_SizeChanged(object sender, EventArgs e)

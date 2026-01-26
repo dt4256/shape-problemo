@@ -234,15 +234,15 @@ namespace Project_v1
             {
                 if (Algo == Algos.Basic)
                 {
-                    for (int i = 0; i < shapes.Count; i++)
+                    foreach (Shape i in shapes)
                     {
-                        for (int j = 0; j < shapes.Count; j++)
+                        foreach (Shape j in shapes)
                         {
                             if (i == j) continue;
 
                             bool upper = false;
                             bool lower = false;
-                            double[] tmp = Get_K(shapes[i].X, shapes[i].Y, shapes[j].X, shapes[j].Y);
+                            double[] tmp = Get_K(i.X, i.Y, j.X, j.Y);
 
                             double k = tmp[0];
                             int x1 = (int)tmp[1];
@@ -257,9 +257,9 @@ namespace Project_v1
 
                             if ((upper && !lower) || (!upper && lower) || (!upper && !lower))
                             {
-                                shapes[i].Status = 1;
-                                shapes[j].Status = 1;
-                                e.Graphics.DrawLine(new Pen(Color.Black), shapes[i].X, shapes[i].Y, shapes[j].X, shapes[j].Y);
+                                i.Status = 1;
+                                j.Status = 1;
+                                e.Graphics.DrawLine(new Pen(Color.Black),i.X, i.Y, j.X, j.Y);
                             }
                         }
                     }
@@ -284,7 +284,7 @@ namespace Project_v1
                     int next = 0;
                     {
                         int xtemp = -100;
-                        int ytemp = shapes[p].X;
+                        int ytemp = shapes[p].Y;
 
                         for (int i = 0; i < shapes.Count; i++)
                         {
