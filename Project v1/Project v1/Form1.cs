@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
@@ -39,6 +40,7 @@ namespace Project_v1
         bool removing_flag = false;
         bool figmove = false;
         private bench _form2;//benchmarc form
+        private Rad _form3;
         public Form1()
         {
             InitializeComponent();
@@ -402,6 +404,34 @@ namespace Project_v1
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
             Application.Exit();
+        }
+
+        private void radiusToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (_form3 == null || _form3.IsDisposed)
+            {
+                _form3 = new Rad(this, shapes[0].Rad);
+            }
+            _form3.Rad_Changed += Rad_changed;
+            _form3.Show();
+        }
+
+
+        private void Rad_changed(object sender, RadiusEvent e)
+        {
+            foreach(var i in shapes)
+            {
+                i.Rad = e.R;
+            }
+            Refresh();
+        }
+
+        private void developerdebugToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach(var i in shapes)
+            {
+                Debug.WriteLine(Convert.ToString(i.Rad)+" ");
+            }
         }
     }
 }

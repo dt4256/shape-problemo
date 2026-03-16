@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace Project_v1
 {
-    abstract class Shape
+    public abstract class Shape
     {
         protected int x, y;//pos
         protected static int R;//radius
@@ -16,7 +16,12 @@ namespace Project_v1
         protected int diffx, diffy;//
         protected int status; //1-крайние
         protected int move_figure;//idk
-
+        
+        public int Rad
+        {
+            get { return R; }
+            set { R = Math.Abs(value); }
+        }
         public Color Clr
         {
             get { return clr; }
@@ -77,7 +82,7 @@ namespace Project_v1
         public abstract bool IsInside(int x, int y);
     }
     //Выше абстрактный класс Shape, ниже классы Circle, Square, Triangle, которые от него наследуются
-    class Circle : Shape
+    public class Circle : Shape
     {
         public Circle(int x, int y) : base(x, y)
         {
@@ -101,7 +106,7 @@ namespace Project_v1
         }
 
     }
-    class Sqare : Shape
+    public class Sqare : Shape
     {
         public Sqare(int x, int y) : base(x, y)
         {
@@ -126,7 +131,7 @@ namespace Project_v1
             else return false;
         }
     }
-    class Triangle : Shape
+    public class Triangle : Shape
     {
         public Triangle(int x, int y) : base(x, y)
         {

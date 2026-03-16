@@ -32,6 +32,7 @@
             this.backtomainToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.startBenchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.temToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.startonlyjarvisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -40,7 +41,8 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.backtomainToolStripMenuItem,
             this.startBenchToolStripMenuItem,
-            this.temToolStripMenuItem});
+            this.temToolStripMenuItem,
+            this.startonlyjarvisToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(800, 24);
@@ -69,6 +71,13 @@
             this.temToolStripMenuItem.Text = "temp";
             this.temToolStripMenuItem.Click += new System.EventHandler(this.temToolStripMenuItem_Click);
             // 
+            // startonlyjarvisToolStripMenuItem
+            // 
+            this.startonlyjarvisToolStripMenuItem.Name = "startonlyjarvisToolStripMenuItem";
+            this.startonlyjarvisToolStripMenuItem.Size = new System.Drawing.Size(102, 20);
+            this.startonlyjarvisToolStripMenuItem.Text = "start_only_jarvis";
+            this.startonlyjarvisToolStripMenuItem.Click += new System.EventHandler(this.startonlyjarvisToolStripMenuItem_Click);
+            // 
             // bench
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -95,5 +104,6 @@
         private System.Windows.Forms.ToolStripMenuItem backtomainToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem startBenchToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem temToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem startonlyjarvisToolStripMenuItem;
     }
 }

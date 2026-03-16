@@ -66,7 +66,7 @@ namespace Project_v1
         {
             
             int step = 10;
-            int launches = 600 / step;
+            int launches = 400 / step;
             ready_for_graphix = false;
             shapes.Clear();
             basic_time.Clear();
@@ -75,7 +75,7 @@ namespace Project_v1
             removing_flag = false;
             int screenWidth = this.ClientSize.Width;
             int screenHeight = this.ClientSize.Height;
-            for (int i = 3; i <= launches; i++)
+            for (int i = 0; i < launches; i++)
             {
                 temToolStripMenuItem.Text="B"+i.ToString();
                 Stopwatch stopwatch = Stopwatch.StartNew();
@@ -91,7 +91,7 @@ namespace Project_v1
             shapes.Clear();
             Refresh();
             Algo = Algos.Jarvis;
-            for (int i = 3; i <= launches; i++)
+            for (int i = 0; i < launches; i++)
             {
                 temToolStripMenuItem.Text = "J"+i.ToString();
                 Stopwatch stopwatch = Stopwatch.StartNew();
@@ -318,6 +318,42 @@ namespace Project_v1
 
         private void temToolStripMenuItem_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void startonlyjarvisToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int step = 10;
+            int launches = 20000 / step;
+            ready_for_graphix = false;
+            shapes.Clear();
+            basic_time.Clear();
+            jarvis_time.Clear();
+            Algo = Algos.Basic;
+            removing_flag = false;
+            int screenWidth = this.ClientSize.Width;
+            int screenHeight = this.ClientSize.Height;
+            Refresh();
+            basic_time.Add(0);
+            basic_time.Add(0);
+            Algo = Algos.Jarvis;
+            for (int i = 0; i < launches; i++)
+            {
+                temToolStripMenuItem.Text = "J" + i.ToString();
+                Stopwatch stopwatch = Stopwatch.StartNew();
+                for (int j = 0; j < step; j++)
+                {
+                    shapes.Add(change_figure(rnd.Next(0, 3), rnd.Next(screenWidth), rnd.Next(screenHeight)));
+                }
+                Refresh();
+                stopwatch.Stop();
+                jarvis_time.Add(stopwatch.ElapsedMilliseconds);
+
+            }
+            shapes.Clear();
+            Refresh();
+            ready_for_graphix = true;
+            this.Invalidate();
 
         }
     }
