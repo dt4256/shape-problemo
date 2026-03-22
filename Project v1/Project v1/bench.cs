@@ -34,14 +34,14 @@ namespace Project_v1
         private Shape change_figure(int type,int x,int y)
         {
             if (type == 0) {
-                return new Circle(x, y);
+                return new Circle(x, y,Color.Black);
             }else if (type == 1)
             {
-                return new Triangle(x, y);
+                return new Triangle(x, y,Color.Black);
             }
             else
             {
-                return new Sqare(x, y);
+                return new Sqare(x, y, Color.Black);
             }
         }
         private void bench_Load(object sender, EventArgs e)

@@ -29,6 +29,9 @@
         private void InitializeComponent()
         {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.colorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.radiusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.typeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.circleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sqareToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -37,9 +40,6 @@
             this.basicToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.jarvisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.goToBenchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.colorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.radiusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.developerdebugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -56,6 +56,29 @@
             this.menuStrip1.Size = new System.Drawing.Size(800, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.colorToolStripMenuItem,
+            this.radiusToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.fileToolStripMenuItem.Text = "Settings";
+            // 
+            // colorToolStripMenuItem
+            // 
+            this.colorToolStripMenuItem.Name = "colorToolStripMenuItem";
+            this.colorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.colorToolStripMenuItem.Text = "Color";
+            this.colorToolStripMenuItem.Click += new System.EventHandler(this.colorToolStripMenuItem_Click);
+            // 
+            // radiusToolStripMenuItem
+            // 
+            this.radiusToolStripMenuItem.Name = "radiusToolStripMenuItem";
+            this.radiusToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.radiusToolStripMenuItem.Text = "Radius";
+            this.radiusToolStripMenuItem.Click += new System.EventHandler(this.radiusToolStripMenuItem_Click);
             // 
             // typeToolStripMenuItem
             // 
@@ -76,21 +99,21 @@
             this.circleToolStripMenuItem.Checked = true;
             this.circleToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.circleToolStripMenuItem.Name = "circleToolStripMenuItem";
-            this.circleToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.circleToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
             this.circleToolStripMenuItem.Text = "Circle";
             this.circleToolStripMenuItem.Click += new System.EventHandler(this.circleToolStripMenuItem_Click);
             // 
             // sqareToolStripMenuItem
             // 
             this.sqareToolStripMenuItem.Name = "sqareToolStripMenuItem";
-            this.sqareToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.sqareToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
             this.sqareToolStripMenuItem.Text = "Sqare";
             this.sqareToolStripMenuItem.Click += new System.EventHandler(this.sqareToolStripMenuItem_Click);
             // 
             // triangleToolStripMenuItem
             // 
             this.triangleToolStripMenuItem.Name = "triangleToolStripMenuItem";
-            this.triangleToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.triangleToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
             this.triangleToolStripMenuItem.Text = "Triangle";
             this.triangleToolStripMenuItem.Click += new System.EventHandler(this.triangleToolStripMenuItem_Click);
             // 
@@ -111,45 +134,23 @@
             this.basicToolStripMenuItem.Checked = true;
             this.basicToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.basicToolStripMenuItem.Name = "basicToolStripMenuItem";
-            this.basicToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.basicToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.basicToolStripMenuItem.Text = "Basic";
             this.basicToolStripMenuItem.Click += new System.EventHandler(this.basicToolStripMenuItem_Click);
             // 
             // jarvisToolStripMenuItem
             // 
             this.jarvisToolStripMenuItem.Name = "jarvisToolStripMenuItem";
-            this.jarvisToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.jarvisToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.jarvisToolStripMenuItem.Text = "Jarvis";
             this.jarvisToolStripMenuItem.Click += new System.EventHandler(this.jarvisToolStripMenuItem_Click);
             // 
             // goToBenchToolStripMenuItem
             // 
             this.goToBenchToolStripMenuItem.Name = "goToBenchToolStripMenuItem";
-            this.goToBenchToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.goToBenchToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.goToBenchToolStripMenuItem.Text = "Go_To_Bench";
             this.goToBenchToolStripMenuItem.Click += new System.EventHandler(this.goToBenchToolStripMenuItem_Click);
-            // 
-            // fileToolStripMenuItem
-            // 
-            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.colorToolStripMenuItem,
-            this.radiusToolStripMenuItem});
-            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
-            this.fileToolStripMenuItem.Text = "Settings";
-            // 
-            // colorToolStripMenuItem
-            // 
-            this.colorToolStripMenuItem.Name = "colorToolStripMenuItem";
-            this.colorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.colorToolStripMenuItem.Text = "Color";
-            // 
-            // radiusToolStripMenuItem
-            // 
-            this.radiusToolStripMenuItem.Name = "radiusToolStripMenuItem";
-            this.radiusToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.radiusToolStripMenuItem.Text = "Radius";
-            this.radiusToolStripMenuItem.Click += new System.EventHandler(this.radiusToolStripMenuItem_Click);
             // 
             // developerdebugToolStripMenuItem
             // 

@@ -34,6 +34,7 @@ namespace Project_v1
     }
     public partial class Form1 : Form
     {
+        Color nextcol = Color.Black;
         Figures nowFigure = Figures.Circle;
         Algos Algo = Algos.Basic;
         private List<Shape> shapes = new List<Shape>();
@@ -45,10 +46,9 @@ namespace Project_v1
         {
             InitializeComponent();
             DoubleBuffered = true;
-            shapes.Add(new Circle(300, 300));
-            shapes.Add(new Circle(500, 300));
-            shapes.Add(new Circle(2000, 300));
-            shapes.Add(new Circle(300, 500));
+            shapes.Add(new Circle(300, 300,nextcol));
+            shapes.Add(new Circle(500, 300, nextcol));
+            shapes.Add(new Circle(300, 500, nextcol));
             
         }
 
@@ -116,21 +116,21 @@ namespace Project_v1
             {
                 if (nowFigure == Figures.Circle)
                 {
-                    shapes.Add(new Circle(e.X, e.Y));
+                    shapes.Add(new Circle(e.X, e.Y,nextcol));
                     shapes[shapes.Count - 1].Flag = true;
 
                     Refresh();
                 }
                 else if (nowFigure == Figures.Square)
                 {
-                    shapes.Add(new Sqare(e.X, e.Y));
+                    shapes.Add(new Sqare(e.X, e.Y,nextcol));
                     shapes[shapes.Count - 1].Flag = true;
 
                     Refresh();
                 }
                 else if (nowFigure == Figures.Triangle)
                 {
-                    shapes.Add(new Triangle(e.X, e.Y));
+                    shapes.Add(new Triangle(e.X, e.Y,nextcol));
                     shapes[shapes.Count - 1].Flag = true;
                     Refresh();
                 }
@@ -414,6 +414,11 @@ namespace Project_v1
             }
             _form3.Rad_Changed += Rad_changed;
             _form3.Show();
+            if (_form3.WindowState == FormWindowState.Minimized)
+            {
+                _form3.WindowState = FormWindowState.Normal;
+            }
+            _form3.Activate();
         }
 
 
@@ -431,6 +436,18 @@ namespace Project_v1
             foreach(var i in shapes)
             {
                 Debug.WriteLine(Convert.ToString(i.Rad)+" ");
+            }
+        }
+
+        private void colorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (ColorDialog colorDialog = new ColorDialog())
+            {
+                colorDialog.Color = nextcol; 
+                if (colorDialog.ShowDialog() == DialogResult.OK)
+                {
+                    nextcol = colorDialog.Color;
+                }
             }
         }
     }

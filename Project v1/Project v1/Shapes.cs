@@ -11,7 +11,7 @@ namespace Project_v1
     {
         protected int x, y;//pos
         protected static int R;//radius
-        protected static Color clr;//color
+        protected Color clr;//color
         protected bool flag;//move_flag
         protected int diffx, diffy;//
         protected int status; //1-крайние
@@ -60,7 +60,7 @@ namespace Project_v1
         static Shape()
         {
             R = 60;//база по конспекту 
-            clr= Color.Black;
+
             
         }
         protected Shape()
@@ -73,10 +73,10 @@ namespace Project_v1
         //
         public abstract void Draw(Graphics g);
         //
-        protected Shape(int x, int y)
+        protected Shape(int x, int y,Color color)
         {
             this.x = x; this.y = y;
-
+            clr = color;
         }
 
         public abstract bool IsInside(int x, int y);
@@ -84,7 +84,7 @@ namespace Project_v1
     //Выше абстрактный класс Shape, ниже классы Circle, Square, Triangle, которые от него наследуются
     public class Circle : Shape
     {
-        public Circle(int x, int y) : base(x, y)
+        public Circle(int x, int y, Color color) : base(x, y, color)
         {
             //Просто напоминалка, не раскомментировать
             //this.x = x;this.y = y;
@@ -108,7 +108,7 @@ namespace Project_v1
     }
     public class Sqare : Shape
     {
-        public Sqare(int x, int y) : base(x, y)
+        public Sqare(int x, int y,Color color) : base(x, y,color)
         {
             //Просто напоминалка, не раскомментировать
             //this.x = x;this.y = y;
@@ -133,7 +133,7 @@ namespace Project_v1
     }
     public class Triangle : Shape
     {
-        public Triangle(int x, int y) : base(x, y)
+        public Triangle(int x, int y, Color color) : base(x, y, color)
         {
             //Просто напоминалка, не раскомментировать
             //this.x = x;this.y = y;
