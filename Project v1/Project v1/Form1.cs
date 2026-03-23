@@ -447,6 +447,10 @@ namespace Project_v1
                 if (colorDialog.ShowDialog() == DialogResult.OK)
                 {
                     nextcol = colorDialog.Color;
+                    if (shapes.Count() > 0)
+                    {
+                        shapes[0].Clr = nextcol;
+                    }
                 }
             }
         }

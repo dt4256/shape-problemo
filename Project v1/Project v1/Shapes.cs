@@ -11,7 +11,7 @@ namespace Project_v1
     {
         protected int x, y;//pos
         protected static int R;//radius
-        protected Color clr;//color
+        protected static Color clr;//color
         protected bool flag;//move_flag
         protected int diffx, diffy;//
         protected int status; //1-крайние
@@ -25,6 +25,7 @@ namespace Project_v1
         public Color Clr
         {
             get { return clr; }
+            set { clr = value; }
         }
         public bool Flag
         {

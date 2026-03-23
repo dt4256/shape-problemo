@@ -66,7 +66,7 @@ namespace Project_v1
         {
             
             int step = 10;
-            int launches = 400 / step;
+            int launches = 200 / step;
             ready_for_graphix = false;
             shapes.Clear();
             basic_time.Clear();
@@ -78,11 +78,12 @@ namespace Project_v1
             for (int i = 0; i < launches; i++)
             {
                 temToolStripMenuItem.Text="B"+i.ToString();
-                Stopwatch stopwatch = Stopwatch.StartNew();
-                for (int j = 0; j < step; j++)
+                shapes.Clear();
+                for (int j = 0; j < step * (i+1); j++)
                 {
                     shapes.Add(change_figure(rnd.Next(0, 3), rnd.Next(screenWidth), rnd.Next(screenHeight)));
                 }
+                Stopwatch stopwatch = Stopwatch.StartNew();
                 Refresh();
                 stopwatch.Stop();
                 basic_time.Add(stopwatch.ElapsedMilliseconds);
@@ -94,11 +95,12 @@ namespace Project_v1
             for (int i = 0; i < launches; i++)
             {
                 temToolStripMenuItem.Text = "J"+i.ToString();
-                Stopwatch stopwatch = Stopwatch.StartNew();
-                for (int j = 0; j < step; j++)
+                shapes.Clear();
+                for (int j = 0; j < step * (i+1); j++)
                 {
                     shapes.Add(change_figure(rnd.Next(0, 3), rnd.Next(screenWidth), rnd.Next(screenHeight)));
                 }
+                Stopwatch stopwatch = Stopwatch.StartNew();
                 Refresh();
                 stopwatch.Stop();
                 jarvis_time.Add(stopwatch.ElapsedMilliseconds);
@@ -324,7 +326,7 @@ namespace Project_v1
         private void startonlyjarvisToolStripMenuItem_Click(object sender, EventArgs e)
         {
             int step = 10;
-            int launches = 20000 / step;
+            int launches = 2000 / step;
             ready_for_graphix = false;
             shapes.Clear();
             basic_time.Clear();
@@ -340,11 +342,12 @@ namespace Project_v1
             for (int i = 0; i < launches; i++)
             {
                 temToolStripMenuItem.Text = "J" + i.ToString();
-                Stopwatch stopwatch = Stopwatch.StartNew();
-                for (int j = 0; j < step; j++)
+                shapes.Clear();
+                for (int j = 0; j < step*(i+1); j++)
                 {
                     shapes.Add(change_figure(rnd.Next(0, 3), rnd.Next(screenWidth), rnd.Next(screenHeight)));
                 }
+                Stopwatch stopwatch = Stopwatch.StartNew();
                 Refresh();
                 stopwatch.Stop();
                 jarvis_time.Add(stopwatch.ElapsedMilliseconds);
