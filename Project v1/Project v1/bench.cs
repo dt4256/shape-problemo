@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Project_v1
@@ -30,14 +25,16 @@ namespace Project_v1
             InitializeComponent();
             _ownerForm = owner;
         }
-        
-        private Shape change_figure(int type,int x,int y)
+
+        private Shape change_figure(int type, int x, int y)
         {
-            if (type == 0) {
-                return new Circle(x, y,Color.Black);
-            }else if (type == 1)
+            if (type == 0)
             {
-                return new Triangle(x, y,Color.Black);
+                return new Circle(x, y, Color.Black);
+            }
+            else if (type == 1)
+            {
+                return new Triangle(x, y, Color.Black);
             }
             else
             {
@@ -64,7 +61,7 @@ namespace Project_v1
 
         private void startBenchToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            
+
             int step = 10;
             int launches = 200 / step;
             ready_for_graphix = false;
@@ -77,31 +74,35 @@ namespace Project_v1
             int screenHeight = this.ClientSize.Height;
             for (int i = 0; i < launches; i++)
             {
-                temToolStripMenuItem.Text="B"+i.ToString();
+                label1.Text = "B" + i.ToString();
+                label1.Refresh();
                 shapes.Clear();
-                for (int j = 0; j < step * (i+1); j++)
+                for (int j = 0; j < step * (i + 1); j++)
                 {
                     shapes.Add(change_figure(rnd.Next(0, 3), rnd.Next(screenWidth), rnd.Next(screenHeight)));
                 }
+                for (int k = 0; k < shapes.Count; k++) shapes[k].Status = 0;
                 Stopwatch stopwatch = Stopwatch.StartNew();
-                Refresh();
+                basic_times();
                 stopwatch.Stop();
                 basic_time.Add(stopwatch.ElapsedMilliseconds);
-                
+
             }
             shapes.Clear();
             Refresh();
             Algo = Algos.Jarvis;
             for (int i = 0; i < launches; i++)
             {
-                temToolStripMenuItem.Text = "J"+i.ToString();
+                label1.Text = "J" + i.ToString();
+                label1.Refresh();
                 shapes.Clear();
-                for (int j = 0; j < step * (i+1); j++)
+                for (int j = 0; j < step * (i + 1); j++)
                 {
                     shapes.Add(change_figure(rnd.Next(0, 3), rnd.Next(screenWidth), rnd.Next(screenHeight)));
                 }
+                for (int k = 0; k < shapes.Count; k++) shapes[k].Status = 0;
                 Stopwatch stopwatch = Stopwatch.StartNew();
-                Refresh();
+                jarvis_times();
                 stopwatch.Stop();
                 jarvis_time.Add(stopwatch.ElapsedMilliseconds);
 
@@ -113,10 +114,92 @@ namespace Project_v1
 
 
         }
+        private void basic_times()
+        {
+            foreach (Shape i in shapes)
+            {
+                foreach (Shape j in shapes)
+                {
+                    if (i == j) continue;
 
+                    bool upper = false;
+                    bool lower = false;
+                    double[] tmp = Get_K(i.X, i.Y, j.X, j.Y);
+
+                    double k = tmp[0];
+                    int x1 = (int)tmp[1];
+                    int y1 = (int)tmp[2];
+
+                    for (int m = 0; m < shapes.Count; m++)
+                    {
+                        int pos = Upper_Lower(shapes[m].X, shapes[m].Y, x1, y1, k);
+                        if (pos == 1) upper = true;
+                        else if (pos == -1) lower = true;
+                    }
+
+                    if ((upper && !lower) || (!upper && lower) || (!upper && !lower))
+                    {
+                        i.Status = 1;
+                        j.Status = 1;
+                    }
+                }
+            }
+        }
+        private void jarvis_times()
+        {
+            int p = 0;
+            for (int i = 1; i < shapes.Count; i++)
+            {
+                if (shapes[i].Y < shapes[p].Y || (shapes[i].Y == shapes[p].Y && shapes[i].X < shapes[p].X))
+                    p = i;
+
+            }
+            int start = p;
+
+            shapes[p].Status = 1;
+            double mincos = 4;
+            int next = 0;
+            {
+                int xtemp = -100;
+                int ytemp = shapes[p].Y;
+
+                for (int i = 0; i < shapes.Count; i++)
+                {
+                    double cos = vectorcos(xtemp, ytemp, shapes[p].X, shapes[p].Y, shapes[i].X, shapes[i].Y);
+
+                    if (cos < mincos)
+                    {
+                        mincos = cos;
+                        next = i;
+                    }
+
+                }
+
+            }
+            shapes[next].Status = 1;
+            int a = start;
+            int b = next;
+            do
+            {
+                mincos = 4;
+                for (int i = 0; i < shapes.Count; i++)
+                {
+                    double cos = vectorcos(shapes[a].X, shapes[a].Y, shapes[b].X, shapes[b].Y, shapes[i].X, shapes[i].Y);
+
+                    if (cos < mincos)
+                    {
+                        mincos = cos;
+                        next = i;
+                    }
+                }
+                shapes[next].Status = 1;
+                a = b;
+                b = next;
+            } while (next != start);
+        }
         private void startBenchToolStripMenuItem_Paint(object sender, PaintEventArgs e)
         {
-           
+
 
 
         }
@@ -179,24 +262,25 @@ namespace Project_v1
         {
             //int screenWidth = this.ClientSize.Width;
             //int screenHeight = this.ClientSize.Height;
-            
+
             if (ready_for_graphix)
             {
                 int marginup = 40;
                 int markx = 15;
                 e.Graphics.Clear(Color.White);
-                int screenWidth = this.ClientSize.Width-5;   
-                int screenHeight = this.ClientSize.Height-5; 
+                int screenWidth = this.ClientSize.Width - 5;
+                int screenHeight = this.ClientSize.Height - 5;
                 using (Pen pen = new Pen(Color.Black))
                 {
                     pen.EndCap = LineCap.ArrowAnchor;
                     e.Graphics.DrawLine(pen, markx, screenHeight, markx, marginup);
-                    e.Graphics.DrawLine(pen,markx,screenHeight,screenWidth,screenHeight); 
+                    e.Graphics.DrawLine(pen, markx, screenHeight, screenWidth, screenHeight);
                 }
                 int workWidth = screenWidth - markx;
                 int workHeight = screenHeight - marginup;
                 long maxTime = Math.Max(basic_time.Max(), jarvis_time.Max());
-                for (int i = 1; i < basic_time.Count; i++) {
+                for (int i = 1; i < basic_time.Count; i++)
+                {
                     int x1 = markx + (i - 1) * workWidth / (basic_time.Count - 1);
                     int y1 = screenHeight - (int)(basic_time[i - 1] * workHeight / maxTime);
                     int x2 = markx + i * workWidth / (basic_time.Count - 1);
@@ -212,104 +296,12 @@ namespace Project_v1
                     e.Graphics.DrawLine(new Pen(Color.Red), x1, y1, x2, y2);
                 }
             }
-            //algos start
-            for (int i = 0; i < shapes.Count; i++) shapes[i].Status = 0;
-            //basic algo
-            if (shapes.Count > 2 && ready_for_graphix==false)
-            {
-                if (Algo == Algos.Basic)
-                {
-                    foreach(Shape i in shapes)
-                    {
-                        foreach (Shape j in shapes)
-                        {
-                            if (i == j) continue;
-
-                            bool upper = false;
-                            bool lower = false;
-                            double[] tmp = Get_K(i.X, i.Y, j.X,j.Y);
-
-                            double k = tmp[0];
-                            int x1 = (int)tmp[1];
-                            int y1 = (int)tmp[2];
-
-                            for (int m = 0; m < shapes.Count; m++)
-                            {
-                                int pos = Upper_Lower(shapes[m].X, shapes[m].Y, x1, y1, k);
-                                if (pos == 1) upper = true;
-                                else if (pos == -1) lower = true;
-                            }
-
-                            if ((upper && !lower) || (!upper && lower) || (!upper && !lower))
-                            {
-                                i.Status = 1;
-                                j.Status = 1;
-                            }
-                        }
-                    }
 
 
 
-                }
-                else if (Algo == Algos.Jarvis)
-                {
-                    int p = 0;
-                    for (int i = 1; i < shapes.Count; i++)
-                    {
-                        if (shapes[i].Y < shapes[p].Y || (shapes[i].Y == shapes[p].Y && shapes[i].X < shapes[p].X))
-                            p = i;
-
-                    }
-                    int start = p;
-
-                    shapes[p].Status = 1;
-                    double mincos = 4;
-                    int next = 0;
-                    {
-                        int xtemp = -100;
-                        int ytemp = shapes[p].Y;
-
-                        for (int i = 0; i < shapes.Count; i++)
-                        {
-                            double cos = vectorcos(xtemp, ytemp, shapes[p].X, shapes[p].Y, shapes[i].X, shapes[i].Y);
-
-                            if (cos < mincos)
-                            {
-                                mincos = cos;
-                                next = i;
-                            }
-
-                        }
-
-                    }
-                    shapes[next].Status = 1;
-                    int a = start;
-                    int b = next;
-                    do
-                    {
-                        mincos = 4;
-                        for (int i = 0; i < shapes.Count; i++)
-                        {
-                            double cos = vectorcos(shapes[a].X, shapes[a].Y, shapes[b].X, shapes[b].Y, shapes[i].X, shapes[i].Y);
-
-                            if (cos < mincos)
-                            {
-                                mincos = cos;
-                                next = i;
-                            }
-                        }
-                        shapes[next].Status = 1;
-                        a = b;
-                        b = next;
-                    } while (next != start);
 
 
-                }
 
-                
-
-            }
-            
         }
 
         private void bench_SizeChanged(object sender, EventArgs e)
@@ -318,7 +310,7 @@ namespace Project_v1
 
         }
 
-        private void temToolStripMenuItem_Click(object sender, EventArgs e)
+        private void label1_Click(object sender, EventArgs e)
         {
 
         }
@@ -341,14 +333,16 @@ namespace Project_v1
             Algo = Algos.Jarvis;
             for (int i = 0; i < launches; i++)
             {
-                temToolStripMenuItem.Text = "J" + i.ToString();
+                label1.Text = "J" + i.ToString();
+                label1.Refresh();
                 shapes.Clear();
-                for (int j = 0; j < step*(i+1); j++)
+                for (int j = 0; j < step * (i + 1); j++)
                 {
                     shapes.Add(change_figure(rnd.Next(0, 3), rnd.Next(screenWidth), rnd.Next(screenHeight)));
                 }
+                for (int k = 0; k < shapes.Count; k++) shapes[k].Status = 0;
                 Stopwatch stopwatch = Stopwatch.StartNew();
-                Refresh();
+                jarvis_times();
                 stopwatch.Stop();
                 jarvis_time.Add(stopwatch.ElapsedMilliseconds);
 
@@ -359,6 +353,9 @@ namespace Project_v1
             this.Invalidate();
 
         }
+
+
+
     }
 
 }
