@@ -63,7 +63,7 @@ namespace Project_v1
         {
 
             int step = 10;
-            int launches = 200 / step;
+            int launches = 2000 / step;
             ready_for_graphix = false;
             shapes.Clear();
             basic_time.Clear();
@@ -130,9 +130,9 @@ namespace Project_v1
                     int x1 = (int)tmp[1];
                     int y1 = (int)tmp[2];
 
-                    for (int m = 0; m < shapes.Count; m++)
+                    foreach (Shape m in shapes)
                     {
-                        int pos = Upper_Lower(shapes[m].X, shapes[m].Y, x1, y1, k);
+                        int pos = Upper_Lower(m.X, m.Y, x1, y1, k);
                         if (pos == 1) upper = true;
                         else if (pos == -1) lower = true;
                     }

@@ -119,33 +119,32 @@ namespace Project_v1
                     shapes.Add(new Circle(e.X, e.Y,nextcol));
                     shapes[shapes.Count - 1].Flag = true;
 
-                    Refresh();
                 }
                 else if (nowFigure == Figures.Square)
                 {
                     shapes.Add(new Sqare(e.X, e.Y,nextcol));
                     shapes[shapes.Count - 1].Flag = true;
 
-                    Refresh();
                 }
                 else if (nowFigure == Figures.Triangle)
                 {
                     shapes.Add(new Triangle(e.X, e.Y,nextcol));
                     shapes[shapes.Count - 1].Flag = true;
-                    Refresh();
+                    
                 }
 
                 if (shapes[shapes.Count - 1].Status == 0)
                 {
                     figmove = true;
-                    for(int i = 0; i < shapes.Count; i++)
+                    shapes[shapes.Count - 1].Movable = true;
+                    for (int i = 0; i < shapes.Count; i++)
                     {
                         shapes[i].Flag = true;
                         shapes[i].DiffX = e.X - shapes[i].X;
                         shapes[i].DiffY = e.Y - shapes[i].Y;
                     }
                 }
-
+                Refresh();
 
             }
 
@@ -183,6 +182,7 @@ namespace Project_v1
         {
             for (int i = 0; i < shapes.Count; i++)
             {
+                shapes[i].Movable = false;
                 shapes[i].Flag = false;
                 shapes[i].DiffX = 0;
                 shapes[i].DiffY = 0;
@@ -250,9 +250,9 @@ namespace Project_v1
                             int x1 = (int)tmp[1];
                             int y1 = (int)tmp[2];
 
-                            for (int m = 0; m < shapes.Count; m++)
+                            foreach (Shape m in shapes)
                             {
-                                int pos = Upper_Lower(shapes[m].X, shapes[m].Y, x1, y1, k);
+                                int pos = Upper_Lower(m.X, m.Y, x1, y1, k);
                                 if (pos == 1) upper = true;
                                 else if (pos == -1) lower = true;
                             }
@@ -278,7 +278,7 @@ namespace Project_v1
                             p = i;
                         
                     }
-                    //e.Graphics.DrawEllipse(new Pen(Color.Red), shapes[p].X, shapes[p].Y, 5, 5);
+                    
                     int start = p;
                     
                     shapes[p].Status = 1;
@@ -337,9 +337,10 @@ namespace Project_v1
                 
             }
                 //обтяжка кончилась
-                for (int i = 0; i < shapes.Count; i++)
+                foreach (Shape i in shapes)
                 {
-                    shapes[i].Draw(e.Graphics);
+                if (i.Movable) continue;
+                    i.Draw(e.Graphics);
                 }
 
             

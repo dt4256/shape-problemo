@@ -9,6 +9,7 @@ namespace Project_v1
 {
     public abstract class Shape
     {
+        protected bool movable = false;
         protected int x, y;//pos
         protected static int R;//radius
         protected static Color clr;//color
@@ -17,6 +18,11 @@ namespace Project_v1
         protected int status; //1-крайние
         protected int move_figure;//idk
         
+        public bool Movable
+        {
+            get { return movable; }
+            set { movable = value; }
+        }
         public int Rad
         {
             get { return R; }

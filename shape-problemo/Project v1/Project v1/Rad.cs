@@ -15,7 +15,7 @@ namespace Project_v1
     {
         public event RadDelegate Rad_Changed;
         private readonly Form1 _ownerForm;
-        RadiusEvent _rad;
+        //RadiusEvent _rad;
         int r;
         public Rad()
         {
