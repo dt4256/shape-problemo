@@ -7,8 +7,10 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Runtime.ConstrainedExecution;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 
 using System.Threading.Tasks;
@@ -34,6 +36,8 @@ namespace Project_v1
     }
     public partial class Form1 : Form
     {
+        string path;
+        bool saved;
         Color nextcol = Color.Black;
         Figures nowFigure = Figures.Circle;
         Algos Algo = Algos.Basic;
@@ -45,7 +49,10 @@ namespace Project_v1
         public Form1()
         {
             InitializeComponent();
+            
             DoubleBuffered = true;
+            saved = true;
+            path = null;
             shapes.Add(new Circle(300, 300,nextcol));
             shapes.Add(new Circle(500, 300, nextcol));
             shapes.Add(new Circle(300, 500, nextcol));
@@ -134,7 +141,7 @@ namespace Project_v1
                     shapes[shapes.Count - 1].Flag = true;
                     Refresh();
                 }
-
+                
                 if (shapes[shapes.Count - 1].Status == 0)
                 {
                     figmove = true;
@@ -146,7 +153,7 @@ namespace Project_v1
                     }
                 }
 
-
+                
             }
 
             for (int i = shapes.Count - 1; i >= 0; i--)
@@ -158,7 +165,7 @@ namespace Project_v1
                 }
             }
 
-
+            saved = false;
         }
 
 
@@ -176,7 +183,7 @@ namespace Project_v1
                 
             }
             Refresh();
-
+            saved= false;
         }
         //клик
         private void Form1_MouseUp(object sender, MouseEventArgs e)
@@ -190,6 +197,7 @@ namespace Project_v1
             removing_flag = true;
             figmove = false;
             Refresh();
+            saved = false;
 
         }
 
@@ -429,6 +437,7 @@ namespace Project_v1
                 i.Rad = e.R;
             }
             Refresh();
+            saved=false;
         }
 
         private void developerdebugToolStripMenuItem_Click(object sender, EventArgs e)
@@ -450,6 +459,75 @@ namespace Project_v1
                     if (shapes.Count() > 0)
                     {
                         shapes[0].Clr = nextcol;
+                    }
+                }
+            }
+            saved = false;
+        }
+
+        private void Save_state(string path)
+        {
+            //clr,Rad
+            
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write);
+            if (shapes.Count > 0)
+            {
+                bf.Serialize(fs, shapes[0].Clr);
+                bf.Serialize(fs, shapes[0].Rad);
+            }
+            bf.Serialize(fs, shapes);
+            fs.Close();
+            
+        }
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Binary Files (*.bin)|*.bin|All files (*.*)|*.*";
+            saveFileDialog.Title = "Save binary file";
+            saveFileDialog.DefaultExt = "bin";
+            saveFileDialog.AddExtension = true;
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                Save_state(saveFileDialog.FileName);
+            }
+            path = saveFileDialog.FileName;
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (path == null)
+            {
+                saveAsToolStripMenuItem_Click(sender, e);
+                return;
+            }
+            else { 
+                Save_state(path);
+            }
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (saved == false)
+            {
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                openFileDialog.Filter = "Binary Files (*.bin)|*.bin|All files (*.*)|*.*";
+                openFileDialog.Title = "Открыть бинарный файл";
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    path= openFileDialog.FileName;
+                    BinaryFormatter bf = new BinaryFormatter();
+                    FileStream fs = new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read);
+                    List<string> data = new List<string>();//clr,Rad
+                    Color clr = (Color)(bf.Deserialize(fs));
+                    int rd = (int)(bf.Deserialize(fs));
+                    shapes = (List<Shape>)bf.Deserialize(fs);
+                    if (shapes.Count > 0)
+                    {
+                        shapes[0].Rad = rd;
+                        shapes[0].Clr = clr;
                     }
                 }
             }

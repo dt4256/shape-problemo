@@ -57,3 +57,15 @@ C:\Users\ptest\Desktop\Temp\shape-problemo\Project v1\Project v1\obj\Debug\Proje
 C:\Users\ptest\Desktop\Temp\shape-problemo\Project v1\Project v1\obj\Debug\Project v1.csproj.CoreCompileInputs.cache
 C:\Users\ptest\Desktop\Temp\shape-problemo\Project v1\Project v1\obj\Debug\Project v1.exe
 C:\Users\ptest\Desktop\Temp\shape-problemo\Project v1\Project v1\obj\Debug\Project v1.pdb
+C:\Users\ptest\Desktop\shape-problemo\Project v1\Project v1\bin\Debug\Project v1.exe.config
+C:\Users\ptest\Desktop\shape-problemo\Project v1\Project v1\bin\Debug\Project v1.exe
+C:\Users\ptest\Desktop\shape-problemo\Project v1\Project v1\bin\Debug\Project v1.pdb
+C:\Users\ptest\Desktop\shape-problemo\Project v1\Project v1\obj\Debug\Project v1.csproj.AssemblyReference.cache
+C:\Users\ptest\Desktop\shape-problemo\Project v1\Project v1\obj\Debug\Project_v1.bench.resources
+C:\Users\ptest\Desktop\shape-problemo\Project v1\Project v1\obj\Debug\Project_v1.Form1.resources
+C:\Users\ptest\Desktop\shape-problemo\Project v1\Project v1\obj\Debug\Project_v1.Properties.Resources.resources
+C:\Users\ptest\Desktop\shape-problemo\Project v1\Project v1\obj\Debug\Project_v1.Rad.resources
+C:\Users\ptest\Desktop\shape-problemo\Project v1\Project v1\obj\Debug\Project v1.csproj.GenerateResource.cache
+C:\Users\ptest\Desktop\shape-problemo\Project v1\Project v1\obj\Debug\Project v1.csproj.CoreCompileInputs.cache
+C:\Users\ptest\Desktop\shape-problemo\Project v1\Project v1\obj\Debug\Project v1.exe
+C:\Users\ptest\Desktop\shape-problemo\Project v1\Project v1\obj\Debug\Project v1.pdb

@@ -354,8 +354,10 @@ namespace Project_v1
 
         }
 
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
 
-
+        }
     }
 
 }

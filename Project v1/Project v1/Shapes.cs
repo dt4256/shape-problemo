@@ -7,11 +7,14 @@ using System.Windows.Forms;
 
 namespace Project_v1
 {
+    [Serializable]
     public abstract class Shape
     {
+
         protected int x, y;//pos
         protected static int R;//radius
         protected static Color clr;//color
+        [NonSerialized]
         protected bool flag;//move_flag
         protected int diffx, diffy;//
         protected int status; //1-крайние
@@ -83,6 +86,7 @@ namespace Project_v1
         public abstract bool IsInside(int x, int y);
     }
     //Выше абстрактный класс Shape, ниже классы Circle, Square, Triangle, которые от него наследуются
+    [Serializable]
     public class Circle : Shape
     {
         public Circle(int x, int y, Color color) : base(x, y, color)
@@ -107,6 +111,7 @@ namespace Project_v1
         }
 
     }
+    [Serializable]
     public class Sqare : Shape
     {
         public Sqare(int x, int y,Color color) : base(x, y,color)
@@ -132,6 +137,7 @@ namespace Project_v1
             else return false;
         }
     }
+    [Serializable]
     public class Triangle : Shape
     {
         public Triangle(int x, int y, Color color) : base(x, y, color)
