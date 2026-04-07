@@ -165,7 +165,7 @@ namespace Project_v1
                 }
             }
 
-            saved = false;
+            not_saved();
         }
 
 
@@ -178,18 +178,23 @@ namespace Project_v1
                 {
                     shapes[i].X = e.X - shapes[i].DiffX;
                     shapes[i].Y = e.Y - shapes[i].DiffY;
-                    
+                    not_saved();
+
                 }
                 
             }
             Refresh();
-            saved= false;
+            
         }
         //клик
         private void Form1_MouseUp(object sender, MouseEventArgs e)
         {
             for (int i = 0; i < shapes.Count; i++)
             {
+                if(shapes[i].Flag == true)
+                {
+                    not_saved();
+                }
                 shapes[i].Flag = false;
                 shapes[i].DiffX = 0;
                 shapes[i].DiffY = 0;
@@ -197,7 +202,7 @@ namespace Project_v1
             removing_flag = true;
             figmove = false;
             Refresh();
-            saved = false;
+            
 
         }
 
@@ -341,7 +346,8 @@ namespace Project_v1
                         //запрос в гугл оставить только определенные элементы в списке c# и мне выдало с where
                         shapes = shapes.Where(x => x.Status == 1).ToList();
                         removing_flag = false;
-                    }
+                        //not_saved();
+                }
                 
             }
                 //обтяжка кончилась
@@ -437,7 +443,7 @@ namespace Project_v1
                 i.Rad = e.R;
             }
             Refresh();
-            saved=false;
+            not_saved();
         }
 
         private void developerdebugToolStripMenuItem_Click(object sender, EventArgs e)
@@ -462,9 +468,15 @@ namespace Project_v1
                     }
                 }
             }
-            saved = false;
+            not_saved();
         }
 
+        private void not_saved()
+        {
+            saved = false;
+            fileToolStripMenuItem1.Text = "*&File";
+        }
+        
         private void Save_state(string path)
         {
             //clr,Rad
@@ -478,7 +490,9 @@ namespace Project_v1
             }
             bf.Serialize(fs, shapes);
             fs.Close();
-            
+
+            saved = true;
+            fileToolStripMenuItem1.Text = "&File";
         }
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -498,7 +512,7 @@ namespace Project_v1
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (path == null)
+            if (path == null || path == "")
             {
                 saveAsToolStripMenuItem_Click(sender, e);
                 return;
@@ -512,15 +526,31 @@ namespace Project_v1
         {
             if (saved == false)
             {
-                OpenFileDialog openFileDialog = new OpenFileDialog();
-                openFileDialog.Filter = "Binary Files (*.bin)|*.bin|All files (*.*)|*.*";
-                openFileDialog.Title = "Открыть бинарный файл";
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                DialogResult result = MessageBox.Show(
+                    "Ваш проект не сохранен. Хотите сохранить?",
+                    "Сохранение",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question,
+                    MessageBoxDefaultButton.Button1
+                );
+
+                if (result == DialogResult.Yes)
                 {
-                    path= openFileDialog.FileName;
-                    BinaryFormatter bf = new BinaryFormatter();
-                    FileStream fs = new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read);
-                    List<string> data = new List<string>();//clr,Rad
+                    saveToolStripMenuItem_Click(sender, e);
+                }
+            }
+            
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Binary Files (*.bin)|*.bin|All files (*.*)|*.*";
+            openFileDialog.Title = "Открыть бинарный файл";
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                path= openFileDialog.FileName;
+                BinaryFormatter bf = new BinaryFormatter();
+                FileStream fs = new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read);
+                try
+                {
+                   //clr,Rad
                     Color clr = (Color)(bf.Deserialize(fs));
                     int rd = (int)(bf.Deserialize(fs));
                     shapes = (List<Shape>)bf.Deserialize(fs);
@@ -530,7 +560,27 @@ namespace Project_v1
                         shapes[0].Clr = clr;
                     }
                 }
+                catch { shapes.Clear(); }
+                
+                fs.Close();
+                Refresh();
+                removing_flag = false;
+                saved = true;
+                fileToolStripMenuItem1.Text = "&File";
+                developerdebugToolStripMenuItem.Text = "Done";
             }
+            
+            
+        }
+
+        private void SettingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void fileToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
