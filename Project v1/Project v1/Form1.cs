@@ -38,7 +38,6 @@ namespace Project_v1
     {
         string path;
         bool saved;
-        Color nextcol = Color.Black;
         Figures nowFigure = Figures.Circle;
         Algos Algo = Algos.Basic;
         private List<Shape> shapes = new List<Shape>();
@@ -49,13 +48,13 @@ namespace Project_v1
         public Form1()
         {
             InitializeComponent();
-            
+            Shape.Clr = Color.Black;
             DoubleBuffered = true;
             saved = true;
             path = null;
-            shapes.Add(new Circle(300, 300,nextcol));
-            shapes.Add(new Circle(500, 300, nextcol));
-            shapes.Add(new Circle(300, 500, nextcol));
+            shapes.Add(new Circle(300, 300));
+            shapes.Add(new Circle(500, 500));
+            shapes.Add(new Circle(400, 500));
             
         }
 
@@ -123,21 +122,21 @@ namespace Project_v1
             {
                 if (nowFigure == Figures.Circle)
                 {
-                    shapes.Add(new Circle(e.X, e.Y,nextcol));
+                    shapes.Add(new Circle(e.X, e.Y));
                     shapes[shapes.Count - 1].Flag = true;
 
                     Refresh();
                 }
                 else if (nowFigure == Figures.Square)
                 {
-                    shapes.Add(new Sqare(e.X, e.Y,nextcol));
+                    shapes.Add(new Sqare(e.X, e.Y));
                     shapes[shapes.Count - 1].Flag = true;
 
                     Refresh();
                 }
                 else if (nowFigure == Figures.Triangle)
                 {
-                    shapes.Add(new Triangle(e.X, e.Y,nextcol));
+                    shapes.Add(new Triangle(e.X, e.Y));
                     shapes[shapes.Count - 1].Flag = true;
                     Refresh();
                 }
@@ -424,7 +423,7 @@ namespace Project_v1
         {
             if (_form3 == null || _form3.IsDisposed)
             {
-                _form3 = new Rad(this, shapes[0].Rad);
+                _form3 = new Rad(this, Shape.Rad);
             }
             _form3.Rad_Changed += Rad_changed;
             _form3.Show();
@@ -438,34 +437,27 @@ namespace Project_v1
 
         private void Rad_changed(object sender, RadiusEvent e)
         {
-            foreach(var i in shapes)
-            {
-                i.Rad = e.R;
-            }
+           
+            Shape.Rad = e.R;
+            
             Refresh();
             not_saved();
         }
 
         private void developerdebugToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            foreach(var i in shapes)
-            {
-                Debug.WriteLine(Convert.ToString(i.Rad)+" ");
-            }
+            
         }
 
         private void colorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (ColorDialog colorDialog = new ColorDialog())
             {
-                colorDialog.Color = nextcol; 
+                colorDialog.Color = Shape.Clr; 
                 if (colorDialog.ShowDialog() == DialogResult.OK)
                 {
-                    nextcol = colorDialog.Color;
-                    if (shapes.Count() > 0)
-                    {
-                        shapes[0].Clr = nextcol;
-                    }
+                    Shape.Clr = colorDialog.Color;
+                    
                 }
             }
             not_saved();
@@ -485,8 +477,8 @@ namespace Project_v1
             FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write);
             if (shapes.Count > 0)
             {
-                bf.Serialize(fs, shapes[0].Clr);
-                bf.Serialize(fs, shapes[0].Rad);
+                bf.Serialize(fs, Shape.Clr);
+                bf.Serialize(fs, Shape.Rad);
             }
             bf.Serialize(fs, shapes);
             fs.Close();
@@ -556,8 +548,8 @@ namespace Project_v1
                     shapes = (List<Shape>)bf.Deserialize(fs);
                     if (shapes.Count > 0)
                     {
-                        shapes[0].Rad = rd;
-                        shapes[0].Clr = clr;
+                        Shape.Rad = rd;
+                        Shape.Clr = clr;
                     }
                 }
                 catch { shapes.Clear(); }

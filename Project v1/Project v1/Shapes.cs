@@ -20,12 +20,12 @@ namespace Project_v1
         protected int status; //1-крайние
         protected int move_figure;//idk
         
-        public int Rad
+        public static int Rad
         {
             get { return R; }
             set { R = Math.Abs(value); }
         }
-        public Color Clr
+        public static Color Clr
         {
             get { return clr; }
             set { clr = value; }
@@ -77,10 +77,9 @@ namespace Project_v1
         //
         public abstract void Draw(Graphics g);
         //
-        protected Shape(int x, int y,Color color)
+        protected Shape(int x, int y)
         {
             this.x = x; this.y = y;
-            clr = color;
         }
 
         public abstract bool IsInside(int x, int y);
@@ -89,7 +88,7 @@ namespace Project_v1
     [Serializable]
     public class Circle : Shape
     {
-        public Circle(int x, int y, Color color) : base(x, y, color)
+        public Circle(int x, int y) : base(x, y)
         {
             //Просто напоминалка, не раскомментировать
             //this.x = x;this.y = y;
@@ -114,7 +113,7 @@ namespace Project_v1
     [Serializable]
     public class Sqare : Shape
     {
-        public Sqare(int x, int y,Color color) : base(x, y,color)
+        public Sqare(int x, int y) : base(x, y)
         {
             //Просто напоминалка, не раскомментировать
             //this.x = x;this.y = y;
@@ -140,7 +139,7 @@ namespace Project_v1
     [Serializable]
     public class Triangle : Shape
     {
-        public Triangle(int x, int y, Color color) : base(x, y, color)
+        public Triangle(int x, int y) : base(x, y)
         {
             //Просто напоминалка, не раскомментировать
             //this.x = x;this.y = y;
