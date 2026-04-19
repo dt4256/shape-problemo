@@ -1,48 +1,59 @@
 ﻿using System;
 using System.Drawing;
+using System.Text.Json.Serialization;
 
 namespace Project_v1
 {
     [Serializable]
     public abstract class Shape
     {
-
         protected int x, y;//pos
         protected static int R;//radius
         protected static Color clr;//color
-        [NonSerialized]
-        protected bool flag;//move_flag
-        protected int diffx, diffy;//
-        protected int status; //1-крайние
-        protected int move_figure;//idk
-        protected bool hide;
+        protected string type;//type
+        [NonSerialized][JsonIgnore] protected bool flag;//move_flag
+        [NonSerialized][JsonIgnore] protected int diffx, diffy;//
+        [NonSerialized][JsonIgnore] protected int status; //1-крайние
+        [NonSerialized][JsonIgnore] protected int move_figure;//idk
+        [NonSerialized][JsonIgnore] protected bool hide;
 
+        public string Type
+        {
+            get { return type; }
+            set { type = value; }
+        }
+        [JsonIgnore]
         public bool Hide
         {
             get { return hide; }
             set { hide = value; }
         }
 
+        
         public static int Rad
         {
             get { return R; }
             set { R = Math.Abs(value); }
         }
+        
         public static Color Clr
         {
             get { return clr; }
             set { clr = value; }
         }
+        [JsonIgnore]
         public bool Flag
         {
             get { return flag; }
             set { flag = value; }
         }
+        [JsonIgnore]
         public int DiffX
         {
             get { return diffx; }
             set { diffx = value; }
         }
+        [JsonIgnore]
         public int DiffY
         {
             get { return diffy; }
@@ -58,7 +69,7 @@ namespace Project_v1
             get { return y; }
             set { y = value; }
         }
-
+        [JsonIgnore]
         public int Status
         {
             get { return status; }
@@ -79,6 +90,7 @@ namespace Project_v1
         }
         //
         public abstract void Draw(Graphics g);
+        public abstract void setType();
         //
         protected Shape(int x, int y)
         {
@@ -95,7 +107,11 @@ namespace Project_v1
         {
             //Просто напоминалка, не раскомментировать
             //this.x = x;this.y = y;
-
+            setType();
+        }
+        public override void setType()
+        {
+            type = "Circle";
         }
         //
         public override void Draw(Graphics g)
@@ -120,8 +136,13 @@ namespace Project_v1
         {
             //Просто напоминалка, не раскомментировать
             //this.x = x;this.y = y;
+            setType();
         }
         //
+        public override void setType()
+        {
+            type = "Square";
+        }
         public override void Draw(Graphics g)
         {
             double side = Math.Sqrt(2) * R * 0.5;
@@ -142,11 +163,15 @@ namespace Project_v1
     [Serializable]
     public class Triangle : Shape
     {
+        public override void setType()
+        {
+            type = "Triangle";
+        }
         public Triangle(int x, int y) : base(x, y)
         {
             //Просто напоминалка, не раскомментировать
             //this.x = x;this.y = y;
-
+            setType();
         }
 
         public override void Draw(Graphics g)
@@ -167,6 +192,42 @@ namespace Project_v1
             int hFromTop = y - (this.y - R);
             double halfL = (Math.Sqrt(3) / 3) * hFromTop;
             return x >= this.x - halfL && x <= this.x + halfL;
+        }
+    }
+    [Serializable]
+    public class Saver_class:Shape
+    {
+        [JsonInclude]
+        public string Type { get; set; }
+
+        [JsonInclude]
+        public int X { get; set; }
+
+        [JsonInclude]
+        public int Y { get; set; }
+        [JsonInclude]
+        public int Clr { get; set; }
+        public Saver_class() : base(0, 0)
+        {
+        }
+        public override void setType()
+        {
+            return;
+        }
+         public override void Draw(Graphics g)
+        {
+            //ничего не рисуем, просто сохраняем
+        }
+         public override bool IsInside(int x, int y)
+        {
+            return false;
+        }
+        public Saver_class(Shape i) : base(i.X, i.Y)
+        {
+            this.type = i.Type;
+            Type = i.Type;
+            X = i.X;
+            Y = i.Y;
         }
     }
 }

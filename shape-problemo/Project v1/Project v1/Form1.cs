@@ -5,6 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Text.Json;
 using System.Windows.Forms;
 
 
@@ -30,7 +31,9 @@ namespace Project_v1
     }
     public partial class Form1 : Form
     {
+
         string path;
+        char how_was_saved;
         bool saved;
         Saveway saveway = Saveway.bin;
         Figures nowFigure = Figures.Circle;
@@ -46,6 +49,7 @@ namespace Project_v1
             InitializeComponent();
             DoubleBuffered = true;
             saved = true;
+            how_was_saved = '\0';
             Shape.Clr = Color.Black;
             path = null;
             shapes.Add(new Circle(300, 300));
@@ -466,6 +470,47 @@ namespace Project_v1
 
         private void Save_state(string path)
         {
+            if (saveway == Saveway.json && how_was_saved == 'b')
+            {
+                DialogResult result = MessageBox.Show(
+                     "Вы сохраняете в json, а раньше сохраняли в bin. Хотите продолжить?",
+                     "Сохранение",
+                     MessageBoxButtons.YesNo,
+                     MessageBoxIcon.Question,
+                     MessageBoxDefaultButton.Button1
+                 );
+                if (result == DialogResult.No)
+                {
+                    return;
+                }
+                else if (result == DialogResult.Yes)
+                {
+                    saveway = Saveway.json;
+                    how_was_saved = 'j';
+                    saveAsToolStripMenuItem_Click(null, null);
+                }
+            }
+            else if (saveway == Saveway.bin && how_was_saved == 'j')
+            {
+                DialogResult result = MessageBox.Show(
+                     "Вы сохраняете в bin, а раньше сохраняли в json. Хотите продолжить?",
+                     "Сохранение",
+                     MessageBoxButtons.YesNo,
+                     MessageBoxIcon.Question,
+                     MessageBoxDefaultButton.Button1
+                 );
+                if (result == DialogResult.No)
+                {
+                    return;
+                }
+                else if (result == DialogResult.Yes)
+                {
+                    saveway = Saveway.bin;
+                    how_was_saved = 'b';
+                    saveAsToolStripMenuItem_Click(null, null);
+                }
+            }
+
             //clr,Rad
             if (saveway == Saveway.bin)
             {
@@ -475,21 +520,40 @@ namespace Project_v1
                 bf.Serialize(fs, Shape.Rad);
                 bf.Serialize(fs, shapes);
                 fs.Close();
-            }else if (saveway == Saveway.json)
-            {
-
+                how_was_saved = 'b';
             }
-                saved = true;
+            else if (saveway == Saveway.json)
+            {
+                List<Saver_class> saves = new List<Saver_class>();
+                foreach (var i in shapes)
+                {
+                    saves.Add(new Saver_class(i));
+                }
+                string json = JsonSerializer.Serialize(new { Clr = Shape.Clr.ToArgb(), Shape.Rad, saves }, new JsonSerializerOptions { WriteIndented = true });
+                File.WriteAllText(path, json);
+                how_was_saved = 'j';
+            }
+            saved = true;
             fileToolStripMenuItem1.Text = "&File";
 
+        }
+        
+        public class saver
+        {
+
+            public int Clr { get; set; }
+            public int Rad { get; set; }
+            public List<Saver_class> saves { get; set; }
         }
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
             SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "Binary Files (*.bin)|*.bin|All files (*.*)|*.*";
-            saveFileDialog.Title = "Save binary file";
-            saveFileDialog.DefaultExt = "bin";
+            //"Save binary/json file"
+            saveFileDialog.Filter = (saveway==Saveway.json ? "JSON Files (*.json)|*.json|All files (*.*)|*.*" : "Binary Files (*.bin)|*.bin|All files (*.*)|*.*");
+            saveFileDialog.Title = (saveway==Saveway.json ? "Save JSON file" : "Save binary file");
+            saveFileDialog.DefaultExt = (saveway == Saveway.json ? "json" : "bin");
+            saveFileDialog.FilterIndex = (saveway == Saveway.json ? 1 : 2);
             saveFileDialog.AddExtension = true;
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
@@ -531,34 +595,84 @@ namespace Project_v1
             }
 
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Binary Files (*.bin)|*.bin|All files (*.*)|*.*";
-            openFileDialog.Title = "Открыть бинарный файл";
+            openFileDialog.Filter = "JSON Files (*.json)|*.json|Binary Files (*.bin)|*.bin|All files (*.*)|*.*";
+            openFileDialog.Title = "Open save";
+            openFileDialog.FilterIndex = 1;
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                path = openFileDialog.FileName;
-                BinaryFormatter bf = new BinaryFormatter();
-                FileStream fs = new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read);
-                try
-                {
-                    //clr,Rad
-                    Color clr = (Color)(bf.Deserialize(fs));
-                    int rd = (int)(bf.Deserialize(fs));
-                    shapes = (List<Shape>)bf.Deserialize(fs);
-                    if (shapes.Count > 0)
-                    {
-                        Shape.Rad = rd;
-                        Shape.Clr = clr;
-                    }
-                }
-                catch { shapes.Clear(); }
+                string selectedPath = openFileDialog.FileName;
+                string ext = System.IO.Path.GetExtension(selectedPath).ToLowerInvariant();
+                Saveway detectedWay;
+                if (ext == ".json") detectedWay = Saveway.json;
+                else detectedWay = Saveway.bin;
+                
 
-                fs.Close();
+                if (detectedWay == Saveway.bin)
+                {
+                    path = selectedPath;
+                    bool loadSuccess = false;
+                    path = openFileDialog.FileName;
+                    BinaryFormatter bf = new BinaryFormatter();
+                    FileStream fs = new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read);
+                    try
+                    {
+                        //clr,Rad
+                        Color clr = (Color)(bf.Deserialize(fs));
+                        int rd = (int)(bf.Deserialize(fs));
+                        shapes = (List<Shape>)bf.Deserialize(fs);
+                        if (shapes.Count > 0)
+                        {
+                            Shape.Rad = rd;
+                            Shape.Clr = clr;
+                        }
+                    }
+                    catch { shapes.Clear(); }
+
+                    fs.Close();
+                }
+                else
+                {
+                    
+                    string json = File.ReadAllText(selectedPath);
+                    var options = new JsonSerializerOptions
+                    {
+                        WriteIndented = true,
+                    };
+                    saver data = JsonSerializer.Deserialize<saver>(json, new JsonSerializerOptions { WriteIndented = true, });
+                    shapes.Clear();
+                    foreach (var i in data.saves){
+                        if (i.Type == "Circle")
+                        {
+                            shapes.Add(new Circle((int)i.X, (int)i.Y));
+                        }
+                        else if (i.Type == "Square")
+                        {
+                            shapes.Add(new Sqare((int)i.X, (int)i.Y));
+                        }
+                        else if (i.Type == "Triangle")
+                        {
+                            shapes.Add(new Triangle((int)i.X, (int)i.Y));
+                        }
+                    }
+                    Shape.Clr = Color.FromArgb(data.Clr);
+                    Shape.Rad = data.Rad;
+                    Refresh();
+                }
                 Refresh();
                 removing_flag = false;
                 saved = true;
+
                 fileToolStripMenuItem1.Text = "&File";
                 developerdebugToolStripMenuItem.Text = "Done";
-                _form3.Dispose();
+                try
+                {
+                    _form3.Dispose();
+                }
+                catch
+                {
+
+                }
+                
             }
 
 
@@ -588,6 +702,8 @@ namespace Project_v1
             removing_flag = false;
             figmove = false;
             path = null;
+            saveway = Saveway.bin;
+            how_was_saved ='\0';
             shapes.Add(new Circle(300, 300));
             shapes.Add(new Circle(500, 500));
             shapes.Add(new Circle(400, 500));
@@ -606,6 +722,23 @@ namespace Project_v1
 
         }
 
+        private void savewayMethodToolStripMenuItem_Click(object sender, EventArgs e)
+        {
 
+        }
+
+        private void binaryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            saveway= Saveway.bin;
+            binaryToolStripMenuItem.Checked = true;
+            jsonToolStripMenuItem.Checked = false;
+        }
+
+        private void jsonToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            saveway = Saveway.json;
+            jsonToolStripMenuItem.Checked = true;
+            binaryToolStripMenuItem.Checked = false;
+        }
     }
 }

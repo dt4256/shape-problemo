@@ -46,6 +46,9 @@
             this.jarvisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.goToBenchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.developerdebugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.savewayMethodToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.binaryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.jsonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -69,6 +72,7 @@
             this.fileToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newToolStripMenuItem,
             this.openToolStripMenuItem,
+            this.savewayMethodToolStripMenuItem,
             this.saveToolStripMenuItem,
             this.saveAsToolStripMenuItem});
             this.fileToolStripMenuItem1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
@@ -150,21 +154,21 @@
             this.circleToolStripMenuItem.Checked = true;
             this.circleToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.circleToolStripMenuItem.Name = "circleToolStripMenuItem";
-            this.circleToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
+            this.circleToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.circleToolStripMenuItem.Text = "Circle";
             this.circleToolStripMenuItem.Click += new System.EventHandler(this.circleToolStripMenuItem_Click);
             // 
             // sqareToolStripMenuItem
             // 
             this.sqareToolStripMenuItem.Name = "sqareToolStripMenuItem";
-            this.sqareToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
+            this.sqareToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.sqareToolStripMenuItem.Text = "Sqare";
             this.sqareToolStripMenuItem.Click += new System.EventHandler(this.sqareToolStripMenuItem_Click);
             // 
             // triangleToolStripMenuItem
             // 
             this.triangleToolStripMenuItem.Name = "triangleToolStripMenuItem";
-            this.triangleToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
+            this.triangleToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.triangleToolStripMenuItem.Text = "Triangle";
             this.triangleToolStripMenuItem.Click += new System.EventHandler(this.triangleToolStripMenuItem_Click);
             // 
@@ -185,21 +189,21 @@
             this.basicToolStripMenuItem.Checked = true;
             this.basicToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.basicToolStripMenuItem.Name = "basicToolStripMenuItem";
-            this.basicToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.basicToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.basicToolStripMenuItem.Text = "Basic";
             this.basicToolStripMenuItem.Click += new System.EventHandler(this.basicToolStripMenuItem_Click);
             // 
             // jarvisToolStripMenuItem
             // 
             this.jarvisToolStripMenuItem.Name = "jarvisToolStripMenuItem";
-            this.jarvisToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.jarvisToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.jarvisToolStripMenuItem.Text = "Jarvis";
             this.jarvisToolStripMenuItem.Click += new System.EventHandler(this.jarvisToolStripMenuItem_Click);
             // 
             // goToBenchToolStripMenuItem
             // 
             this.goToBenchToolStripMenuItem.Name = "goToBenchToolStripMenuItem";
-            this.goToBenchToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.goToBenchToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.goToBenchToolStripMenuItem.Text = "Go_To_Bench";
             this.goToBenchToolStripMenuItem.Click += new System.EventHandler(this.goToBenchToolStripMenuItem_Click);
             // 
@@ -209,6 +213,32 @@
             this.developerdebugToolStripMenuItem.Size = new System.Drawing.Size(111, 20);
             this.developerdebugToolStripMenuItem.Text = "Developer_debug";
             this.developerdebugToolStripMenuItem.Click += new System.EventHandler(this.developerdebugToolStripMenuItem_Click);
+            // 
+            // savewayMethodToolStripMenuItem
+            // 
+            this.savewayMethodToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.binaryToolStripMenuItem,
+            this.jsonToolStripMenuItem});
+            this.savewayMethodToolStripMenuItem.Name = "savewayMethodToolStripMenuItem";
+            this.savewayMethodToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.savewayMethodToolStripMenuItem.Text = "Save method";
+            this.savewayMethodToolStripMenuItem.Click += new System.EventHandler(this.savewayMethodToolStripMenuItem_Click);
+            // 
+            // binaryToolStripMenuItem
+            // 
+            this.binaryToolStripMenuItem.Checked = true;
+            this.binaryToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.binaryToolStripMenuItem.Name = "binaryToolStripMenuItem";
+            this.binaryToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.binaryToolStripMenuItem.Text = "Binary";
+            this.binaryToolStripMenuItem.Click += new System.EventHandler(this.binaryToolStripMenuItem_Click);
+            // 
+            // jsonToolStripMenuItem
+            // 
+            this.jsonToolStripMenuItem.Name = "jsonToolStripMenuItem";
+            this.jsonToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.jsonToolStripMenuItem.Text = "Json";
+            this.jsonToolStripMenuItem.Click += new System.EventHandler(this.jsonToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -252,6 +282,9 @@
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem savewayMethodToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem binaryToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem jsonToolStripMenuItem;
     }
 }
 
