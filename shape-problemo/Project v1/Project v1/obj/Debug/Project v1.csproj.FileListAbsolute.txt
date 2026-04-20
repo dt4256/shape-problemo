@@ -126,3 +126,34 @@ C:\Users\ihrom\Desktop\sharp\shape-problemo\shape-problemo\Project v1\Project v1
 C:\Users\ihrom\Desktop\sharp\shape-problemo\shape-problemo\Project v1\Project v1\bin\Debug\System.Text.Json.xml
 C:\Users\ihrom\Desktop\sharp\shape-problemo\shape-problemo\Project v1\Project v1\bin\Debug\System.Threading.Tasks.Extensions.xml
 C:\Users\ihrom\Desktop\sharp\shape-problemo\shape-problemo\Project v1\Project v1\obj\Debug\Project v1.csproj.Up2Date
+C:\Users\ptest\Desktop\sharp\shape-problemo\shape-problemo\Project v1\Project v1\bin\Debug\Project v1.exe.config
+C:\Users\ptest\Desktop\sharp\shape-problemo\shape-problemo\Project v1\Project v1\bin\Debug\Project v1.exe
+C:\Users\ptest\Desktop\sharp\shape-problemo\shape-problemo\Project v1\Project v1\bin\Debug\Project v1.pdb
+C:\Users\ptest\Desktop\sharp\shape-problemo\shape-problemo\Project v1\Project v1\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\ptest\Desktop\sharp\shape-problemo\shape-problemo\Project v1\Project v1\bin\Debug\System.Buffers.dll
+C:\Users\ptest\Desktop\sharp\shape-problemo\shape-problemo\Project v1\Project v1\bin\Debug\System.IO.Pipelines.dll
+C:\Users\ptest\Desktop\sharp\shape-problemo\shape-problemo\Project v1\Project v1\bin\Debug\System.Memory.dll
+C:\Users\ptest\Desktop\sharp\shape-problemo\shape-problemo\Project v1\Project v1\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\ptest\Desktop\sharp\shape-problemo\shape-problemo\Project v1\Project v1\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\ptest\Desktop\sharp\shape-problemo\shape-problemo\Project v1\Project v1\bin\Debug\System.Text.Encodings.Web.dll
+C:\Users\ptest\Desktop\sharp\shape-problemo\shape-problemo\Project v1\Project v1\bin\Debug\System.Text.Json.dll
+C:\Users\ptest\Desktop\sharp\shape-problemo\shape-problemo\Project v1\Project v1\bin\Debug\System.Threading.Tasks.Extensions.dll
+C:\Users\ptest\Desktop\sharp\shape-problemo\shape-problemo\Project v1\Project v1\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+C:\Users\ptest\Desktop\sharp\shape-problemo\shape-problemo\Project v1\Project v1\bin\Debug\System.Buffers.xml
+C:\Users\ptest\Desktop\sharp\shape-problemo\shape-problemo\Project v1\Project v1\bin\Debug\System.IO.Pipelines.xml
+C:\Users\ptest\Desktop\sharp\shape-problemo\shape-problemo\Project v1\Project v1\bin\Debug\System.Memory.xml
+C:\Users\ptest\Desktop\sharp\shape-problemo\shape-problemo\Project v1\Project v1\bin\Debug\System.Numerics.Vectors.xml
+C:\Users\ptest\Desktop\sharp\shape-problemo\shape-problemo\Project v1\Project v1\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\ptest\Desktop\sharp\shape-problemo\shape-problemo\Project v1\Project v1\bin\Debug\System.Text.Encodings.Web.xml
+C:\Users\ptest\Desktop\sharp\shape-problemo\shape-problemo\Project v1\Project v1\bin\Debug\System.Text.Json.xml
+C:\Users\ptest\Desktop\sharp\shape-problemo\shape-problemo\Project v1\Project v1\bin\Debug\System.Threading.Tasks.Extensions.xml
+C:\Users\ptest\Desktop\sharp\shape-problemo\shape-problemo\Project v1\Project v1\obj\Debug\Project v1.csproj.AssemblyReference.cache
+C:\Users\ptest\Desktop\sharp\shape-problemo\shape-problemo\Project v1\Project v1\obj\Debug\Project_v1.bench.resources
+C:\Users\ptest\Desktop\sharp\shape-problemo\shape-problemo\Project v1\Project v1\obj\Debug\Project_v1.Form1.resources
+C:\Users\ptest\Desktop\sharp\shape-problemo\shape-problemo\Project v1\Project v1\obj\Debug\Project_v1.Properties.Resources.resources
+C:\Users\ptest\Desktop\sharp\shape-problemo\shape-problemo\Project v1\Project v1\obj\Debug\Project_v1.Rad.resources
+C:\Users\ptest\Desktop\sharp\shape-problemo\shape-problemo\Project v1\Project v1\obj\Debug\Project v1.csproj.GenerateResource.cache
+C:\Users\ptest\Desktop\sharp\shape-problemo\shape-problemo\Project v1\Project v1\obj\Debug\Project v1.csproj.CoreCompileInputs.cache
+C:\Users\ptest\Desktop\sharp\shape-problemo\shape-problemo\Project v1\Project v1\obj\Debug\Project v1.csproj.Up2Date
+C:\Users\ptest\Desktop\sharp\shape-problemo\shape-problemo\Project v1\Project v1\obj\Debug\Project v1.exe
+C:\Users\ptest\Desktop\sharp\shape-problemo\shape-problemo\Project v1\Project v1\obj\Debug\Project v1.pdb

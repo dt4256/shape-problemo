@@ -17,6 +17,17 @@ namespace Project_v1
         [NonSerialized][JsonIgnore] protected int move_figure;//idk
         [NonSerialized][JsonIgnore] protected bool hide;
 
+        public void buzz(Random rnd)
+        {
+            if (rnd.Next(0, 2) == 0)
+            {
+                x += rnd.Next(-4, 5);
+            }
+            else
+            {
+                y+= rnd.Next(-4, 5);
+            }
+        }
         public string Type
         {
             get { return type; }
@@ -229,5 +240,14 @@ namespace Project_v1
             X = i.X;
             Y = i.Y;
         }
+    }
+    abstract class Mod
+    {
+        private int x, y;
+        Mod(int x, int y)
+        {
+            this.x = x; this.y = y;
+        }
+
     }
 }

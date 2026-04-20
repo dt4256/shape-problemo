@@ -31,7 +31,7 @@ namespace Project_v1
     }
     public partial class Form1 : Form
     {
-
+        private bool isDragging = false;
         string path;
         char how_was_saved;
         bool saved;
@@ -99,6 +99,8 @@ namespace Project_v1
         //нажатие
         private void Form1_MouseDown(object sender, MouseEventArgs e)
         {
+            if (e.Button == MouseButtons.Left)
+                isDragging = true;
             bool changed = false;
             for (int i = 0; i < shapes.Count; i++)
             {
@@ -125,19 +127,17 @@ namespace Project_v1
                 {
                     shapes.Add(new Circle(e.X, e.Y));
                     shapes[shapes.Count - 1].Flag = true;
-
                 }
                 else if (nowFigure == Figures.Square)
                 {
                     shapes.Add(new Sqare(e.X, e.Y));
                     shapes[shapes.Count - 1].Flag = true;
-
                 }
                 else if (nowFigure == Figures.Triangle)
                 {
                     shapes.Add(new Triangle(e.X, e.Y));
                     shapes[shapes.Count - 1].Flag = true;
-
+                    
                 }
 
                 if (shapes[shapes.Count - 1].Status == 0)
@@ -195,6 +195,7 @@ namespace Project_v1
                 shapes[i].DiffX = 0;
                 shapes[i].DiffY = 0;
             }
+            isDragging = false;
             removing_flag = true;
             figmove = false;
             Refresh();
@@ -343,6 +344,15 @@ namespace Project_v1
                     shapes = shapes.Where(x => x.Status == 1).ToList();
                     removing_flag = false;
                     //not_saved();
+                }
+                if (!isDragging)
+                {
+                    var hullShapes = shapes.Where(x => x.Status == 1).ToList();
+                    if (hullShapes.Count != shapes.Count)
+                    {
+                        shapes = hullShapes;
+                        not_saved();
+                    }
                 }
 
             }
@@ -537,7 +547,7 @@ namespace Project_v1
             fileToolStripMenuItem1.Text = "&File";
 
         }
-        
+
         public class saver
         {
 
@@ -550,10 +560,10 @@ namespace Project_v1
 
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             //"Save binary/json file"
-            saveFileDialog.Filter = (saveway==Saveway.json ? "JSON Files (*.json)|*.json|All files (*.*)|*.*" : "Binary Files (*.bin)|*.bin|All files (*.*)|*.*");
-            saveFileDialog.Title = (saveway==Saveway.json ? "Save JSON file" : "Save binary file");
+            saveFileDialog.Filter = (saveway == Saveway.json ? "JSON Files (*.json)|*.json|All files (*.*)|*.*" : "Binary Files (*.bin)|*.bin|All files (*.*)|*.*");
+            saveFileDialog.Title = (saveway == Saveway.json ? "Save JSON file" : "Save binary file");
             saveFileDialog.DefaultExt = (saveway == Saveway.json ? "json" : "bin");
-            saveFileDialog.FilterIndex = (saveway == Saveway.json ? 1 : 2);
+            saveFileDialog.FilterIndex = 1;
             saveFileDialog.AddExtension = true;
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
@@ -605,7 +615,7 @@ namespace Project_v1
                 Saveway detectedWay;
                 if (ext == ".json") detectedWay = Saveway.json;
                 else detectedWay = Saveway.bin;
-                
+
 
                 if (detectedWay == Saveway.bin)
                 {
@@ -632,7 +642,7 @@ namespace Project_v1
                 }
                 else
                 {
-                    
+
                     string json = File.ReadAllText(selectedPath);
                     var options = new JsonSerializerOptions
                     {
@@ -640,7 +650,8 @@ namespace Project_v1
                     };
                     saver data = JsonSerializer.Deserialize<saver>(json, new JsonSerializerOptions { WriteIndented = true, });
                     shapes.Clear();
-                    foreach (var i in data.saves){
+                    foreach (var i in data.saves)
+                    {
                         if (i.Type == "Circle")
                         {
                             shapes.Add(new Circle((int)i.X, (int)i.Y));
@@ -672,7 +683,7 @@ namespace Project_v1
                 {
 
                 }
-                
+
             }
 
 
@@ -703,7 +714,7 @@ namespace Project_v1
             figmove = false;
             path = null;
             saveway = Saveway.bin;
-            how_was_saved ='\0';
+            how_was_saved = '\0';
             shapes.Add(new Circle(300, 300));
             shapes.Add(new Circle(500, 500));
             shapes.Add(new Circle(400, 500));
@@ -729,7 +740,7 @@ namespace Project_v1
 
         private void binaryToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            saveway= Saveway.bin;
+            saveway = Saveway.bin;
             binaryToolStripMenuItem.Checked = true;
             jsonToolStripMenuItem.Checked = false;
         }
@@ -739,6 +750,51 @@ namespace Project_v1
             saveway = Saveway.json;
             jsonToolStripMenuItem.Checked = true;
             binaryToolStripMenuItem.Checked = false;
+        }
+
+        private void bzzzrt_Tick(object sender, EventArgs e)
+        {
+            Random rnd = new Random();
+            for(int i = 0; i < shapes.Count; ++i)
+            {
+                shapes[i].buzz(rnd);
+            }
+            Refresh();
+        }
+
+        private void playToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void toolStripContainer1_ContentPanel_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
+        private void Startbuton_Click(object sender, EventArgs e)
+        {
+            bzzzrt.Start();
+            Startbuton.Enabled = false;
+            StopButton.Enabled = true;
+        }
+
+        private void StopButton_Click(object sender, EventArgs e)
+        {
+            bzzzrt.Stop();
+            Startbuton.Enabled = true;
+            StopButton.Enabled = false;
+            saved = false;
         }
     }
 }
