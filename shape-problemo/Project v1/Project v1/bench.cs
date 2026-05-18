@@ -285,7 +285,7 @@ namespace Project_v1
                     int y1 = screenHeight - (int)(basic_time[i - 1] * workHeight / maxTime);
                     int x2 = markx + i * workWidth / (basic_time.Count - 1);
                     int y2 = screenHeight - (int)(basic_time[i] * workHeight / maxTime);
-                    e.Graphics.DrawLine(new Pen(Color.Black), x1, y1, x2, y2);
+                    e.Graphics.DrawLine(Pens.Black, x1, y1, x2, y2);
                 }
                 for (int i = 1; i < jarvis_time.Count; i++)
                 {
@@ -293,7 +293,7 @@ namespace Project_v1
                     int y1 = screenHeight - (int)(jarvis_time[i - 1] * workHeight / maxTime);
                     int x2 = markx + i * workWidth / (jarvis_time.Count - 1);
                     int y2 = screenHeight - (int)(jarvis_time[i] * workHeight / maxTime);
-                    e.Graphics.DrawLine(new Pen(Color.Red), x1, y1, x2, y2);
+                    e.Graphics.DrawLine(Pens.Red, x1, y1, x2, y2);
                 }
             }
 

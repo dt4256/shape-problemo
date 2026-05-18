@@ -128,7 +128,10 @@ namespace Project_v1
         public override void Draw(Graphics g)
         {
             int x0 = x - R, y0 = y - R;
-            g.DrawEllipse(new Pen(clr), x0, y0, 2 * R, 2 * R);
+            using (Pen p = new Pen(clr))
+            {
+                g.DrawEllipse(p, x0, y0, 2 * R, 2 * R);
+            }
         }
         public override bool IsInside(int x, int y)
         {
@@ -158,11 +161,13 @@ namespace Project_v1
         {
             double side = Math.Sqrt(2) * R * 0.5;
             int x1 = (int)(x - side), y1 = (int)(y + side), x2 = (int)(x + side), y2 = (int)(y + side), x3 = (int)(x + side), y3 = (int)(y - side), x4 = (int)(x - side), y4 = (int)(y - side);
-            Pen p = new Pen(clr);
-            g.DrawLine(p, x1, y1, x2, y2);
-            g.DrawLine(p, x2, y2, x3, y3);
-            g.DrawLine(p, x3, y3, x4, y4);
-            g.DrawLine(p, x4, y4, x1, y1);
+            using (Pen p = new Pen(clr))
+            {
+                g.DrawLine(p, x1, y1, x2, y2);
+                g.DrawLine(p, x2, y2, x3, y3);
+                g.DrawLine(p, x3, y3, x4, y4);
+                g.DrawLine(p, x4, y4, x1, y1);
+            }
         }
         public override bool IsInside(int x, int y)
         {
@@ -187,11 +192,13 @@ namespace Project_v1
 
         public override void Draw(Graphics g)
         {
-            Pen p = new Pen(clr);
-            int x1 = x, y1 = y - R, y23 = (int)(y + 0.5 * R), x3 = (int)(x - 0.5 * R * Math.Sqrt(3)), x2 = (int)(x + 0.5 * R * Math.Sqrt(3));
-            g.DrawLine(p, x1, y1, x2, y23);
-            g.DrawLine(p, x2, y23, x3, y23);
-            g.DrawLine(p, x3, y23, x1, y1);
+            using (Pen p = new Pen(clr))
+            {
+                int x1 = x, y1 = y - R, y23 = (int)(y + 0.5 * R), x3 = (int)(x - 0.5 * R * Math.Sqrt(3)), x2 = (int)(x + 0.5 * R * Math.Sqrt(3));
+                g.DrawLine(p, x1, y1, x2, y23);
+                g.DrawLine(p, x2, y23, x3, y23);
+                g.DrawLine(p, x3, y23, x1, y1);
+            }
 
         }
 

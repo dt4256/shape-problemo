@@ -43,6 +43,7 @@ namespace Project_v1
         bool figmove = false;
         private bench _form2;//benchmarc form
         private Rad _form3;
+        private ColorDialog _colorDialog = new ColorDialog();
         public Form1()
         {
 
@@ -51,6 +52,7 @@ namespace Project_v1
             saved = true;
             how_was_saved = '\0';
             Shape.Clr = Color.Black;
+            _colorDialog.Color = Shape.Clr;
             path = null;
             shapes.Add(new Circle(300, 300));
             shapes.Add(new Circle(500, 500));
@@ -271,7 +273,7 @@ namespace Project_v1
                             {
                                 i.Status = 1;
                                 j.Status = 1;
-                                e.Graphics.DrawLine(new Pen(Color.Black), i.X, i.Y, j.X, j.Y);
+                                e.Graphics.DrawLine(Pens.Black, i.X, i.Y, j.X, j.Y);
                             }
                         }
                     }
@@ -312,7 +314,7 @@ namespace Project_v1
 
                     }
                     shapes[next].Status = 1;
-                    e.Graphics.DrawLine(new Pen(Color.Red), shapes[start].X, shapes[start].Y, shapes[next].X, shapes[next].Y);
+                    e.Graphics.DrawLine(Pens.Red, shapes[start].X, shapes[start].Y, shapes[next].X, shapes[next].Y);
                     int a = start;
                     int b = next;
                     do
@@ -329,7 +331,7 @@ namespace Project_v1
                             }
                         }
                         shapes[next].Status = 1;
-                        e.Graphics.DrawLine(new Pen(Color.Red), shapes[b].X, shapes[b].Y, shapes[next].X, shapes[next].Y);
+                        e.Graphics.DrawLine(Pens.Red, shapes[b].X, shapes[b].Y, shapes[next].X, shapes[next].Y);
                         a = b;
                         b = next;
                     } while (next != start);
@@ -460,14 +462,10 @@ namespace Project_v1
 
         private void colorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (ColorDialog colorDialog = new ColorDialog())
+            _colorDialog.Color = Shape.Clr;
+            if (_colorDialog.ShowDialog() == DialogResult.OK)
             {
-                colorDialog.Color = Shape.Clr;
-                if (colorDialog.ShowDialog() == DialogResult.OK)
-                {
-                    Shape.Clr = colorDialog.Color;
-
-                }
+                Shape.Clr = _colorDialog.Color;
             }
             not_saved();
         }
