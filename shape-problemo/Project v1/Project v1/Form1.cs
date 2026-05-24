@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 
 
-
+ 
 namespace Project_v1
 {
 
@@ -31,6 +31,8 @@ namespace Project_v1
     }
     public partial class Form1 : Form
     {
+        private bool _pendingNotSaved = false;
+        private Shape _lastAddedShape = null;
         private bool isDragging = false;
         string path;
         char how_was_saved;
@@ -104,6 +106,7 @@ namespace Project_v1
             if (e.Button == MouseButtons.Left)
                 isDragging = true;
             bool changed = false;
+
             for (int i = 0; i < shapes.Count; i++)
             {
                 if (shapes[i].IsInside(e.X, e.Y) && e.Button == MouseButtons.Left)
@@ -111,18 +114,16 @@ namespace Project_v1
                     shapes[i].Flag = true;
                     shapes[i].DiffX = e.X - shapes[i].X;
                     shapes[i].DiffY = e.Y - shapes[i].Y;
-
                 }
-
             }
+
             bool temp = false;
             for (int i = 0; i < shapes.Count; i++)
             {
                 if (shapes[i].IsInside(e.X, e.Y))
-                {
                     temp = true;
-                }
             }
+
             if (e.Button == MouseButtons.Left && temp == false)
             {
                 if (nowFigure == Figures.Circle)
@@ -139,14 +140,17 @@ namespace Project_v1
                 {
                     shapes.Add(new Triangle(e.X, e.Y));
                     shapes[shapes.Count - 1].Flag = true;
-                    
                 }
 
-                if (shapes[shapes.Count - 1].Status == 0)
+                _lastAddedShape = shapes[shapes.Count - 1]; // запомнили
+
+                if (_lastAddedShape.Status == 0)
                 {
                     figmove = true;
-                    shapes[shapes.Count - 1].Hide = true;
+                    _lastAddedShape.Hide = true;
                     changed = true;
+                    _pendingNotSaved = true; // откладываем вызов
+
                     for (int i = 0; i < shapes.Count; i++)
                     {
                         shapes[i].Flag = true;
@@ -154,7 +158,6 @@ namespace Project_v1
                         shapes[i].DiffY = e.Y - shapes[i].Y;
                     }
                 }
-
             }
 
             for (int i = shapes.Count - 1; i >= 0; i--)
@@ -165,26 +168,28 @@ namespace Project_v1
                     break;
                 }
             }
-            if (!changed) not_saved();
+
+            if (e.Button == MouseButtons.Left && !changed) not_saved();
         }
 
 
         //движение
         private void Form1_MouseMove(object sender, MouseEventArgs e)
         {
+            bool hasMoved = false;
             for (int i = 0; i < shapes.Count; i++)
             {
                 if (shapes[i].Flag == true)
                 {
                     shapes[i].X = e.X - shapes[i].DiffX;
                     shapes[i].Y = e.Y - shapes[i].DiffY;
+                    hasMoved = true;
                     not_saved();
-
                 }
-
             }
-            Refresh();
 
+            if (hasMoved) _pendingNotSaved = false; // движение было — уже помечено
+            Refresh();
         }
         //клик
         private void Form1_MouseUp(object sender, MouseEventArgs e)
@@ -192,17 +197,25 @@ namespace Project_v1
             for (int i = 0; i < shapes.Count; i++)
             {
                 shapes[i].Hide = false;
-
                 shapes[i].Flag = false;
                 shapes[i].DiffX = 0;
                 shapes[i].DiffY = 0;
             }
+
             isDragging = false;
             removing_flag = true;
             figmove = false;
-            Refresh();
 
+            Refresh(); // здесь Paint удалит внутренние точки (removing_flag)
 
+            // Если не было движения, но добавленная фигура осталась в списке — данные изменились
+            if (_pendingNotSaved && _lastAddedShape != null && shapes.Contains(_lastAddedShape))
+            {
+                not_saved();
+            }
+
+            _pendingNotSaved = false;
+            _lastAddedShape = null;
         }
 
         private void sqareToolStripMenuItem_Click(object sender, EventArgs e)
@@ -719,6 +732,9 @@ namespace Project_v1
             Shape.Clr = Color.Black;
             Shape.Rad = 60;
             if (_form3 != null) _form3.Dispose();
+            saved = true;
+            fileToolStripMenuItem1.Text = "&File";
+
         }
 
         private void SettingsToolStripMenuItem_Click(object sender, EventArgs e)
