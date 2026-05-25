@@ -716,6 +716,7 @@ namespace Project_v1
                     saveToolStripMenuItem_Click(sender, e);
                 }
             }
+            StopButton_Click(sender, e);
             path = null;
             saved = true;
             nowFigure = Figures.Circle;
